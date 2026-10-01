@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometry Dash - Neon Run</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #070714;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 35%, #25235a 0%, #10102c 35%, #060611 100%);
+}
+
+/* Background grid */
+#game::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(100, 100, 255, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100, 100, 255, .08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    transform: perspective(500px) rotateX(55deg) scale(1.5);
+    transform-origin: center bottom;
+    opacity: .7;
+}
+
+/* Background glow */
+.glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .25;
+    pointer-events: none;
+}
+
+.glow.one {
+    width: 350px;
+    height: 350px;
+    background: #6c42ff;
+    left: 5%;
+    top: 5%;
+}
+
+.glow.two {
+    width: 300px;
+    height: 300px;
+    background: #00eaff;
+    right: 5%;
+    bottom: 5%;
+}
+
+/* HUD */
+#hud {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    text-align: center;
+    color: white;
+    pointer-events: none;
+}
+
+#title {
+    font-size: clamp(22px, 4vw, 42px);
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-shadow:
+        0 0 10px #00eaff,
+        0 0 25px #6c42ff;
+}
+
+#score {
+    margin-top: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#progressOuter {
+    width: min(600px, 80vw);
+    height: 7px;
+    margin: 12px auto 0;
+    background: rgba(255,255,255,.15);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,234,255,.2);
+}
+
+#progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00eaff, #a64cff);
+    box-shadow: 0 0 15px #00eaff;
+}
+
+/* World */
+#world {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 58%;
+}
+
+/* Ground */
+#ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background:
+        linear-gradient(#1a1a42, #0c0c25);
+    border-top: 4px solid #00eaff;
+    box-shadow:
+        0 -5px 20px rgba(0,234,255,.35),
+        inset 0 10px 25px rgba(0,0,0,.5);
+}
+
+#ground::after {
+    content: "";
+    position: absolute;
+    inset: 12px 0 0;
+    background-image:
+        linear-gradient(90deg, transparent 0 38px, rgba(0,234,255,.12) 39px 40px);
+    background-size: 40px 100%;
+}
+
+/* Player */
+#player {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    left: 15%;
+    bottom: 80px;
+    z-index: 10;
+
+    background: linear-gradient(135deg, #ffffff, #54f7ff 45%, #6d3cff);
+    border: 3px solid white;
+
+    box-shadow:
+        0 0 10px #00eaff,
+        0 0 25px #00eaff,
+        0 0 50px rgba(100,50,255,.8);
+
+    transform-origin: center;
+}
+
+#player::before,
+#player::after {
+    content: "";
+    position: absolute;
+    background: #11132d;
+}
+
+#player::before {
+    width: 8px;
+    height: 8px;
+    left: 8px;
+    top: 8px;
+}
+
+#player::after {
+    width: 8px;
+    height: 8px;
+    right: 8px;
+    top: 8px;
+}
+
+/* Obstacles */
+.obstacle {
+    position: absolute;
+    z-index: 5;
+}
+
+/* Spike */
+.spike {
+    width: 0;
+    height: 0;
+    border-left: 24px solid transparent;
+    border-right: 24px solid transparent;
+    border-bottom: 52px solid #ff315f;
+
+    filter:
+        drop-shadow(0 0 5px #ff315f)
+        drop-shadow(0 0 15px rgba(255,49,95,.7));
+}
+
+/* Double spike */
+.doubleSpike {
+    width: 48px;
+    height: 52px;
+    background:
+        linear-gradient(135deg, transparent 48%, #ff315f 49% 51%, transparent 52%),
+        linear-gradient(45deg, transparent 48%, #ff315f 49% 51%, transparent 52%);
+    filter: drop-shadow(0 0 8px #ff315f);
+}
+
+/* Block */
+.block {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #4036a3, #1b1a55);
+    border: 3px solid #8c7dff;
+    box-shadow:
+        0 0 10px #6655ff,
+        inset 0 0 15px rgba(150,100,255,.3);
+}
+
+.block::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 2px solid rgba(255,255,255,.2);
+}
+
+/* Jump pad */
+.pad {
+    width: 55px;
+    height: 12px;
+    border-radius: 5px 5px 0 0;
+    background: #ffed4a;
+    box-shadow: 0 0 15px #ffed4a;
+}
+
+/* Portal */
+.portal {
+    width: 55px;
+    height: 140px;
+    border: 7px solid #00eaff;
+    border-radius: 50%;
+    box-shadow:
+        0 0 10px #00eaff,
+        0 0 30px #00eaff,
+        inset 0 0 20px #00eaff;
+}
+
+/* Particles */
+.particle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #00eaff;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow: 0 0 8px #00eaff;
+}
+
+/* Overlay */
+#overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(4,4,15,.72);
+    backdrop-filter: blur(8px);
+}
+
+.panel {
+    width: min(500px, 88vw);
+    padding: 40px 30px;
+    text-align: center;
+    border: 2px solid rgba(0,234,255,.5);
+    border-radius: 20px;
+    background: rgba(12,12,40,.9);
+    box-shadow:
+        0 0 30px rgba(0,234,255,.2),
+        inset 0 0 30px rgba(100,50,255,.1);
+    color: white;
+}
+
+.panel h1 {
+    font-size: clamp(32px, 8vw, 60px);
+    margin-bottom: 12px;
+    letter-spacing: 4px;
+    text-shadow:
+        0 0 10px #00eaff,
+        0 0 30px #774cff;
+}
+
+.panel p {
+    color: #bfc7ff;
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+button {
+    margin-top: 25px;
+    padding: 15px 38px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #00aeea, #774cff);
+    box-shadow:
+        0 0 15px rgba(0,234,255,.5),
+        0 0 30px rgba(119,76,255,.3);
+    transition: .2s;
+}
+
+button:hover {
+    transform: scale(1.06);
+    box-shadow:
+        0 0 25px rgba(0,234,255,.8),
+        0 0 45px rgba(119,76,255,.5);
+}
+
+#gameOverText {
+    display: none;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #world {
+        height: 52%;
+    }
+
+    #ground {
+        height: 65px;
+    }
+
+    #player {
+        width: 40px;
+        height: 40px;
+        left: 20%;
+    }
+
+    .spike {
+        border-left-width: 20px;
+        border-right-width: 20px;
+        border-bottom-width: 45px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+
+    <div id="hud">
+        <div id="title">NEON DASH</div>
+        <div id="score">0</div>
+
+        <div id="progressOuter">
+            <div id="progress"></div>
+        </div>
+    </div>
+
+    <div id="world">
+        <div id="player"></div>
+        <div id="ground"></div>
+    </div>
+
+    <div id="overlay">
+        <div class="panel">
+
+            <div id="startText">
+                <h1>NEON DASH</h1>
+                <p>Geometry Dash inspired endless runner</p>
+                <p>SPACE / ↑ / CLICK / TAP to jump</p>
+                <button onclick="startGame()">PLAY</button>
+            </div>
+
+            <div id="gameOverText">
+                <h1>CRASH!</h1>
+                <p id="finalScore">Score: 0</p>
+                <p>Press R or click below to try again.</p>
+                <button onclick="restartGame()">RETRY</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+const game = document.getElementById("game");
+const world = document.getElementById("world");
+const player = document.getElementById("player");
+const scoreEl = document.getElementById("score");
+const progressEl = document.getElementById("progress");
+const overlay = document.getElementById("overlay");
+const startText = document.getElementById("startText");
+const gameOverText = document.getElementById("gameOverText");
+const finalScore = document.getElementById("finalScore");
+
+let running = false;
+let gameOver = false;
+
+let playerY = 0;
+let velocity = 0;
+let rotation = 0;
+
+const gravity = 0.85;
+const jumpPower = 15.5;
+
+let speed = 7;
+let score = 0;
+let distance = 0;
+
+let obstacles = [];
+let particles = [];
+
+let spawnTimer = 0;
+let lastTime = 0;
+
+let best = Number(localStorage.getItem("neonDashBest") || 0);
+
+/* -------------------------
+   START
+------------------------- */
+
+function startGame() {
+    running = true;
+    gameOver = false;
+
+    overlay.style.display = "none";
+
+    score = 0;
+    distance = 0;
+    speed = 7;
+
+    playerY = 0;
+    velocity = 0;
+    rotation = 0;
+
+    clearObstacles();
+
+    spawnTimer = 50;
+
+    requestAnimationFrame(gameLoop);
+}
+
+/* -------------------------
+   RESTART
+------------------------- */
+
+function restartGame() {
+    startText.style.display = "block";
+    gameOverText.style.display = "none";
+    startGame();
+}
+
+/* -------------------------
+   JUMP
+------------------------- */
+
+function jump() {
+
+    if (!running || gameOver) return;
+
+    if (playerY <= 2) {
+        velocity = jumpPower;
+    }
+}
+
+document.addEventListener("keydown", e => {
+
+    if (
+        e.code === "Space" ||
+        e.code === "ArrowUp" ||
+        e.code === "KeyW"
+    ) {
+        e.preventDefault();
+        jump();
+    }
+
+    if (e.code === "KeyR") {
+        if (gameOver) restartGame();
+    }
+});
+
+document.addEventListener("mousedown", e => {
+    if (e.target.tagName !== "BUTTON") jump();
+});
+
+document.addEventListener("touchstart", e => {
+    if (e.target.tagName !== "BUTTON") jump();
+}, {passive: true});
+
+/* -------------------------
+   OBSTACLES
+------------------------- */
+
+function createObstacle(type, x, bottom = 80) {
+
+    const el = document.createElement("div");
+
+    el.classList.add("obstacle", type);
+
+    el.style.left = x + "px";
+    el.style.bottom = bottom + "px";
+
+    world.appendChild(el);
+
+    obstacles.push({
+        el,
+        x,
+        type
+    });
+}
+
+function spawnPattern() {
+
+    const startX = window.innerWidth + 100;
+
+    const patterns = [
+
+        () => {
+            createObstacle("spike", startX);
+        },
+
+        () => {
+            createObstacle("spike", startX);
+            createObstacle("spike", startX + 45);
+        },
+
+        () => {
+            createObstacle("block", startX);
+            createObstacle("spike", startX + 70);
+        },
+
+        () => {
+            createObstacle("spike", startX);
+            createObstacle("spike", startX + 45);
+            createObstacle("spike", startX + 90);
+        },
+
+        () => {
+            createObstacle("block", startX);
+            createObstacle("block", startX + 65);
+        },
+
+        () => {
+            createObstacle("spike", startX);
+            createObstacle("block", startX + 75);
+            createObstacle("spike", startX + 145);
+        },
+
+        () => {
+            createObstacle("doubleSpike", startX);
+        }
+
+    ];
+
+    const pattern = patterns[
+        Math.floor(Math.random() * patterns.length)
+    ];
+
+    pattern();
+}
+
+/* -------------------------
+   PARTICLES
+------------------------- */
+
+function createParticle() {
+
+    const p = document.createElement("div");
+
+    p.className = "particle";
+
+    const rect = player.getBoundingClientRect();
+
+    p.style.left =
+        (rect.left + window.scrollX + 10 + Math.random() * 25) + "px";
+
+    p.style.top =
+        (rect.top + Math.random() * 35) + "px";
+
+    world.appendChild(p);
+
+    particles.push({
+        el: p,
+        x: parseFloat(p.style.left),
+        y: parseFloat(p.style.top),
+        life: 1,
+        vx: -2 - Math.random() * 2,
+        vy: (Math.random() - .5) * 2
+    });
+}
+
+function updateParticles() {
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+
+        const p = particles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= .035;
+
+        p.el.style.left = p.x + "px";
+        p.el.style.top = p.y + "px";
+        p.el.style.opacity = p.life;
+
+        if (p.life <= 0) {
+
+            p.el.remove();
+            particles.splice(i, 1);
+        }
+    }
+}
+
+/* -------------------------
+   COLLISION
+------------------------- */
+
+function isColliding(a, b) {
+
+    const r1 = a.getBoundingClientRect();
+    const r2 = b.getBoundingClientRect();
+
+    return !(
+        r1.right < r2.left + 7 ||
+        r1.left + 7 > r2.right ||
+        r1.bottom < r2.top + 7 ||
+        r1.top + 7 > r2.bottom
+    );
+}
+
+function checkCollisions() {
+
+    for (const o of obstacles) {
+
+        if (isColliding(player, o.el)) {
+            die();
+            return;
+        }
+    }
+}
+
+/* -------------------------
+   DEATH
+------------------------- */
+
+function die() {
+
+    if (gameOver) return;
+
+    gameOver = true;
+    running = false;
+
+    player.style.filter = "brightness(3)";
+    player.style.boxShadow =
+        "0 0 30px #fff, 0 0 60px #ff315f";
+
+    if (score > best) {
+        best = score;
+        localStorage.setItem("neonDashBest", best);
+    }
+
+    finalScore.innerHTML =
+        `Score: ${score}<br>Best: ${best}`;
+
+    setTimeout(() => {
+
+        overlay.style.display = "flex";
+        startText.style.display = "none";
+        gameOverText.style.display = "block";
+
+        player.style.filter = "";
+        player.style.boxShadow = "";
+
+    }, 300);
+}
+
+/* -------------------------
+   CLEANUP
+------------------------- */
+
+function clearObstacles() {
+
+    obstacles.forEach(o => o.el.remove());
+
+    obstacles = [];
+
+    particles.forEach(p => p.el.remove());
+
+    particles = [];
+}
+
+/* -------------------------
+   GAME LOOP
+------------------------- */
+
+function gameLoop(time) {
+
+    if (!running) return;
+
+    if (!lastTime) lastTime = time;
+
+    const dt = Math.min((time - lastTime) / 16.67, 2);
+
+    lastTime = time;
+
+    update(dt);
+
+    requestAnimationFrame(gameLoop);
+}
+
+/* -------------------------
+   UPDATE
+------------------------- */
+
+function update(dt) {
+
+    /* Player physics */
+
+    velocity -= gravity * dt;
+
+    playerY += velocity * dt;
+
+    if (playerY < 0) {
+
+        playerY = 0;
+        velocity = 0;
+    }
+
+    player.style.bottom =
+        (80 + playerY) + "px";
+
+    if (playerY > 2) {
+        rotation += 7 * dt;
+    } else {
+        rotation =
+            Math.round(rotation / 90) * 90;
+    }
+
+    player.style.transform =
+        `rotate(${rotation}deg)`;
+
+
+    /* Speed */
+
+    speed += 0.0008 * dt;
+
+    if (speed > 13)
+        speed = 13;
+
+
+    /* Distance */
+
+    distance += speed * dt;
+
+    score = Math.floor(distance / 10);
+
+    scoreEl.textContent =
+        "SCORE  " + score;
+
+
+    /* Progress */
+
+    progressEl.style.width =
+        ((score % 1000) / 10) + "%";
+
+
+    /* Spawn */
+
+    spawnTimer -= speed * dt;
+
+    if (spawnTimer <= 0) {
+
+        spawnPattern();
+
+        spawnTimer =
+            230 + Math.random() * 110;
+    }
+
+
+    /* Move obstacles */
+
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+
+        const o = obstacles[i];
+
+        o.x -= speed * dt;
+
+        o.el.style.left =
+            o.x + "px";
+
+        if (o.x < -150) {
+
+            o.el.remove();
+            obstacles.splice(i, 1);
+        }
+    }
+
+
+    /* Particles */
+
+    if (Math.random() < .8) {
+        createParticle();
+    }
+
+    updateParticles();
+
+
+    /* Collision */
+
+    checkCollisions();
+}
+
+/* -------------------------
+   Resize safety
+------------------------- */
+
+window.addEventListener("resize", () => {
+
+    player.style.left =
+        Math.min(
+            window.innerWidth * .15,
+            220
+        ) + "px";
+});
+
+</script>
+
+</body>
+</html>
