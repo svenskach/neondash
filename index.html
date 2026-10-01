@@ -3,197 +3,199 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEON DASH</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
+*{
+    box-sizing:border-box;
+    user-select:none;
+    -webkit-user-select:none;
 }
 
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #050511;
-    font-family: Arial, Helvetica, sans-serif;
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#050511;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-#game {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
     background:
-        radial-gradient(circle at 70% 30%, rgba(92, 42, 180, .25), transparent 30%),
-        radial-gradient(circle at 20% 70%, rgba(0, 220, 255, .14), transparent 30%),
+        radial-gradient(circle at 70% 30%,rgba(92,42,180,.25),transparent 30%),
+        radial-gradient(circle at 20% 70%,rgba(0,220,255,.14),transparent 30%),
         #050511;
 }
 
-#sky {
-    position: absolute;
-    inset: 0;
+#sky{
+    position:absolute;
+    inset:0;
     background:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    opacity: .7;
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:60px 60px;
 }
 
-#grid {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 45%;
+#grid{
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:45%;
     background:
-        linear-gradient(rgba(0,220,255,.09) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,220,255,.09) 1px, transparent 1px);
-    background-size: 45px 45px;
-    transform: perspective(500px) rotateX(58deg) scale(1.5);
-    transform-origin: bottom;
-    opacity: .5;
+        linear-gradient(rgba(0,220,255,.09) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,220,255,.09) 1px,transparent 1px);
+    background-size:45px 45px;
+    transform:perspective(500px) rotateX(58deg) scale(1.5);
+    transform-origin:bottom;
+    opacity:.5;
 }
 
-.glow {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: .12;
-    pointer-events: none;
+.glow{
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    filter:blur(100px);
+    opacity:.12;
+    pointer-events:none;
 }
 
-.glow.one {
-    background: #00eaff;
-    left: -100px;
-    top: 20%;
+.glow.one{
+    background:#00eaff;
+    left:-100px;
+    top:20%;
 }
 
-.glow.two {
-    background: #a000ff;
-    right: -100px;
-    top: 40%;
+.glow.two{
+    background:#a000ff;
+    right:-100px;
+    top:40%;
 }
 
-#hud {
-    position: absolute;
-    top: 18px;
-    left: 22px;
-    right: 22px;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    pointer-events: none;
+#hud{
+    position:absolute;
+    top:18px;
+    left:22px;
+    right:22px;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    pointer-events:none;
 }
 
-.logo {
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    color: white;
-    text-shadow:
-        0 0 8px #00eaff,
-        0 0 25px #00eaff;
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:3px;
+    color:white;
+    text-shadow:0 0 8px #00eaff,0 0 25px #00eaff;
 }
 
-.hudBox {
-    min-width: 100px;
-    padding: 9px 14px;
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 12px;
-    background: rgba(10,10,30,.6);
-    backdrop-filter: blur(10px);
+.hudBox{
+    min-width:100px;
+    padding:9px 14px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    background:rgba(10,10,30,.6);
+    backdrop-filter:blur(10px);
 }
 
-.hudLabel {
-    font-size: 9px;
-    color: #7d849d;
-    letter-spacing: 2px;
+.hudLabel{
+    font-size:9px;
+    color:#7d849d;
+    letter-spacing:2px;
 }
 
-.hudValue {
-    margin-top: 2px;
-    color: white;
-    font-size: 17px;
-    font-weight: 800;
+.hudValue{
+    margin-top:2px;
+    color:white;
+    font-size:17px;
+    font-weight:800;
 }
 
-#progressWrap {
-    flex: 1;
-    max-width: 400px;
-    height: 7px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: rgba(255,255,255,.08);
+#progressWrap{
+    flex:1;
+    max-width:400px;
+    height:7px;
+    border-radius:10px;
+    overflow:hidden;
+    background:rgba(255,255,255,.08);
 }
 
-#progress {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #00eaff, #9d00ff, #ff00aa);
-    box-shadow: 0 0 15px #00eaff;
+#progress{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#00eaff,#9d00ff,#ff00aa);
+    box-shadow:0 0 15px #00eaff;
 }
 
-#status {
-    margin-left: auto;
-    color: #00eaff;
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 2px;
+#status{
+    margin-left:auto;
+    color:#00eaff;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:2px;
 }
 
-#world {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    transform: translate3d(0, 0, 0);
-    transform-origin: left center;
-    pointer-events: none;
-    will-change: transform;
+/* MOVING LEVEL ONLY */
+#world{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    overflow:visible;
+    transform:translate3d(0,0,0);
+    transform-origin:left center;
+    pointer-events:none;
+    will-change:transform;
 }
 
-#player {
-    position: absolute;
-    left: 16%;
-    bottom: 76px;
-    width: 45px;
-    height: 45px;
-    z-index: 30;
-    border-radius: 9px;
-    background:
-        linear-gradient(135deg, #ffffff, #00eaff 45%, #8a00ff);
-    border: 2px solid white;
+/*
+   PLAYER IS NOW OUTSIDE #world.
+   This is the important fix.
+   The camera moves #world, but never moves the player.
+*/
+#player{
+    position:absolute;
+    left:16%;
+    bottom:76px;
+    width:45px;
+    height:45px;
+    z-index:80;
+    border-radius:9px;
+    background:linear-gradient(135deg,#fff,#00eaff 45%,#8a00ff);
+    border:2px solid white;
     box-shadow:
         0 0 10px #00eaff,
         0 0 30px #00eaff,
         inset 0 0 15px rgba(255,255,255,.8);
-    transform-origin: center;
-    will-change: transform, bottom;
+    transform-origin:center;
+    will-change:transform,bottom;
 }
 
-#player::after {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    border: 2px solid rgba(255,255,255,.75);
-    border-radius: 4px;
+#player::after{
+    content:"";
+    position:absolute;
+    inset:9px;
+    border:2px solid rgba(255,255,255,.75);
+    border-radius:4px;
 }
 
-#ground {
-    position: absolute;
-    left: -10000px;
-    bottom: 0;
-    width: 120000px;
-    height: 76px;
+#ground{
+    position:absolute;
+    left:-10000px;
+    bottom:0;
+    width:120000px;
+    height:76px;
     background:
         linear-gradient(
             90deg,
@@ -202,175 +204,165 @@ html, body {
             #35105b 60%,
             #081e38
         );
-    border-top: 2px solid #00eaff;
+    border-top:2px solid #00eaff;
     box-shadow:
         0 -5px 20px rgba(0,234,255,.35),
         inset 0 10px 30px rgba(0,0,0,.4);
 }
 
-.block {
-    position: absolute;
-    z-index: 12;
-    border-radius: 8px;
-    background:
-        linear-gradient(135deg, #251050, #6512a0);
-    border: 2px solid #b400ff;
+.block{
+    position:absolute;
+    z-index:12;
+    border-radius:8px;
+    background:linear-gradient(135deg,#251050,#6512a0);
+    border:2px solid #b400ff;
     box-shadow:
         0 0 12px rgba(180,0,255,.8),
         inset 0 0 15px rgba(255,255,255,.08);
 }
 
-.block::before {
-    content: "";
-    position: absolute;
-    left: 5px;
-    right: 5px;
-    top: 3px;
-    height: 3px;
-    border-radius: 5px;
-    background: #ffffff;
-    box-shadow: 0 0 8px #ffffff;
+.block::before{
+    content:"";
+    position:absolute;
+    left:5px;
+    right:5px;
+    top:3px;
+    height:3px;
+    border-radius:5px;
+    background:white;
+    box-shadow:0 0 8px white;
 }
 
-.spike {
-    position: absolute;
-    z-index: 15;
-    width: 42px;
-    height: 48px;
-    background: #ff155d;
-    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+.spike{
+    position:absolute;
+    z-index:15;
+    width:42px;
+    height:48px;
+    background:#ff155d;
+    clip-path:polygon(50% 0,100% 100%,0 100%);
     filter:
         drop-shadow(0 0 6px #ff155d)
         drop-shadow(0 0 14px rgba(255,0,80,.8));
 }
 
-.orb {
-    position: absolute;
-    z-index: 18;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #ffe600;
-    border: 3px solid #fff8a0;
-    box-shadow:
-        0 0 10px #ffe600,
-        0 0 25px #ffe600;
-    animation: orbPulse .7s infinite alternate;
+.orb{
+    position:absolute;
+    z-index:18;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#ffe600;
+    border:3px solid #fff8a0;
+    box-shadow:0 0 10px #ffe600,0 0 25px #ffe600;
+    animation:orbPulse .7s infinite alternate;
 }
 
-@keyframes orbPulse {
-    from {
-        transform: scale(.9);
-    }
-    to {
-        transform: scale(1.12);
-    }
+@keyframes orbPulse{
+    from{transform:scale(.9)}
+    to{transform:scale(1.12)}
 }
 
-#flash {
-    position: absolute;
-    inset: 0;
-    z-index: 200;
-    pointer-events: none;
-    background: white;
-    opacity: 0;
+#flash{
+    position:absolute;
+    inset:0;
+    z-index:200;
+    pointer-events:none;
+    background:white;
+    opacity:0;
 }
 
-.overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 300;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(3,3,14,.65);
-    backdrop-filter: blur(12px);
+.overlay{
+    position:absolute;
+    inset:0;
+    z-index:300;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(3,3,14,.65);
+    backdrop-filter:blur(12px);
 }
 
-.panel {
-    width: min(520px, 90vw);
-    padding: 42px;
-    text-align: center;
-    border-radius: 24px;
-    border: 1px solid rgba(0,234,255,.25);
-    background: rgba(10,10,28,.82);
+.panel{
+    width:min(520px,90vw);
+    padding:42px;
+    text-align:center;
+    border-radius:24px;
+    border:1px solid rgba(0,234,255,.25);
+    background:rgba(10,10,28,.82);
     box-shadow:
         0 0 60px rgba(0,234,255,.1),
         inset 0 0 40px rgba(140,0,255,.06);
 }
 
-.title {
-    margin: 0;
-    font-size: clamp(42px, 9vw, 76px);
-    font-weight: 1000;
-    letter-spacing: 7px;
-    color: white;
+.title{
+    margin:0;
+    font-size:clamp(42px,9vw,76px);
+    font-weight:1000;
+    letter-spacing:7px;
+    color:white;
     text-shadow:
         0 0 10px #00eaff,
         0 0 35px #00eaff,
         0 0 70px #8a00ff;
 }
 
-.subtitle {
-    margin: 12px 0 28px;
-    color: #8e96b3;
-    letter-spacing: 3px;
-    font-size: 11px;
+.subtitle{
+    margin:12px 0 28px;
+    color:#8e96b3;
+    letter-spacing:3px;
+    font-size:11px;
 }
 
-.controls {
-    margin-bottom: 25px;
-    color: #b7bdd4;
-    line-height: 1.9;
-    font-size: 12px;
+.controls{
+    margin-bottom:25px;
+    color:#b7bdd4;
+    line-height:1.9;
+    font-size:12px;
 }
 
-.controls b {
-    color: #00eaff;
+.controls b{
+    color:#00eaff;
 }
 
-button {
-    border: 0;
-    border-radius: 13px;
-    padding: 14px 30px;
-    color: white;
-    font-weight: 900;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg, #00a8ff, #7c00ff);
+button{
+    border:0;
+    border-radius:13px;
+    padding:14px 30px;
+    color:white;
+    font-weight:900;
+    letter-spacing:2px;
+    background:linear-gradient(90deg,#00a8ff,#7c00ff);
     box-shadow:
         0 0 15px rgba(0,200,255,.4),
         0 0 35px rgba(130,0,255,.25);
-    cursor: pointer;
-    transition: .15s;
+    cursor:pointer;
+    transition:.15s;
 }
 
-button:hover {
-    transform: scale(1.05);
-    box-shadow:
-        0 0 20px rgba(0,220,255,.7),
-        0 0 45px rgba(140,0,255,.45);
+button:hover{
+    transform:scale(1.05);
 }
 
-#gameOver {
-    display: none;
+#gameOver{
+    display:none;
 }
 
-.bigScore {
-    color: #00eaff;
-    font-size: 30px;
-    font-weight: 900;
-    margin: 15px 0 25px;
+.bigScore{
+    color:#00eaff;
+    font-size:30px;
+    font-weight:900;
+    margin:15px 0 25px;
 }
 
-.particle {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 50;
-    background: #00eaff;
-    box-shadow: 0 0 10px #00eaff;
+.particle{
+    position:absolute;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:90;
+    background:#00eaff;
+    box-shadow:0 0 10px #00eaff;
 }
 </style>
 </head>
@@ -386,6 +378,7 @@ button:hover {
     <div class="glow two"></div>
 
     <div id="hud">
+
         <div class="logo">NEON DASH</div>
 
         <div class="hudBox">
@@ -403,16 +396,21 @@ button:hover {
         </div>
 
         <div id="status">READY</div>
+
     </div>
 
+    <!-- WORLD MOVES -->
     <div id="world">
         <div id="ground"></div>
-        <div id="player"></div>
     </div>
+
+    <!-- PLAYER DOES NOT MOVE WITH CAMERA -->
+    <div id="player"></div>
 
     <div id="flash"></div>
 
     <div class="overlay" id="startScreen">
+
         <div class="panel">
 
             <h1 class="title">NEON<br>DASH</h1>
@@ -429,12 +427,16 @@ button:hover {
                 <b>MOUSE / TOUCH</b> — JUMP
             </div>
 
-            <button id="startBtn">START RUN</button>
+            <button id="startBtn">
+                START RUN
+            </button>
 
         </div>
+
     </div>
 
     <div class="overlay" id="gameOver">
+
         <div class="panel">
 
             <h1 class="title">CRASHED</h1>
@@ -444,114 +446,107 @@ button:hover {
             </div>
 
             <div class="bigScore">
-                SCORE: <span id="finalScore">0</span>
+                SCORE:
+                <span id="finalScore">0</span>
             </div>
 
-            <button id="restartBtn">RUN AGAIN</button>
+            <button id="restartBtn">
+                RUN AGAIN
+            </button>
 
         </div>
+
     </div>
 
 </div>
 
 <script>
-/* ============================================================
-   GAME
-   ============================================================ */
+const game=document.getElementById("game");
+const world=document.getElementById("world");
+const player=document.getElementById("player");
 
-const game = document.getElementById("game");
-const world = document.getElementById("world");
-const player = document.getElementById("player");
+const scoreEl=document.getElementById("score");
+const comboEl=document.getElementById("combo");
+const progressEl=document.getElementById("progress");
+const statusEl=document.getElementById("status");
 
-const scoreEl = document.getElementById("score");
-const comboEl = document.getElementById("combo");
-const progressEl = document.getElementById("progress");
-const statusEl = document.getElementById("status");
+const startScreen=document.getElementById("startScreen");
+const gameOver=document.getElementById("gameOver");
+const finalScore=document.getElementById("finalScore");
+const flash=document.getElementById("flash");
 
-const startScreen = document.getElementById("startScreen");
-const gameOver = document.getElementById("gameOver");
-const finalScore = document.getElementById("finalScore");
-const flash = document.getElementById("flash");
-
-const startBtn = document.getElementById("startBtn");
-const restartBtn = document.getElementById("restartBtn");
+const startBtn=document.getElementById("startBtn");
+const restartBtn=document.getElementById("restartBtn");
 
 
 /* ============================================================
    STATE
    ============================================================ */
 
-let running = false;
-let dead = false;
+let running=false;
+let dead=false;
 
-let lastTime = 0;
+let lastTime=0;
 
-let cameraX = 0;
-let nextSpawnX = 900;
+let cameraX=0;
+let nextSpawnX=900;
 
-let speed = 8;
-const maxSpeed = 16;
+let speed=8;
+const maxSpeed=16;
 
-let distance = 0;
-let score = 0;
+let distance=0;
+let score=0;
 
-let combo = 1;
-let bestCombo = 1;
+let combo=1;
 
-let y = 0;
-let velocityY = 0;
+let y=0;
+let velocityY=0;
 
-const gravity = 0.82;
-const jumpPower = 15.3;
+const gravity=.82;
+const jumpPower=15.3;
 
-let jumpsUsed = 0;
-const maxJumps = 2;
+let jumpsUsed=0;
+const maxJumps=2;
 
-let dashVelocity = 0;
-let dashTimer = 0;
-let dashCooldown = 0;
+let dashVelocity=0;
+let dashTimer=0;
+let dashCooldown=0;
 
-const dashPower = 18;
-const dashDuration = 13;
-const dashCooldownTime = 25;
+const dashPower=18;
+const dashDuration=13;
+const dashCooldownTime=25;
 
-let rotation = 0;
+let rotation=0;
 
-const objects = [];
+const objects=[];
 
 
 /* ============================================================
-   OBJECT CREATION
+   OBJECTS
    ============================================================ */
 
-function createObject(
-    type,
-    x,
-    bottom,
-    width,
-    height
-) {
+function createObject(type,x,bottom,width,height){
 
-    const el = document.createElement("div");
+    const el=document.createElement("div");
 
-    el.className = type;
+    el.className=type;
 
-    el.style.position = "absolute";
-    el.style.left = `${x}px`;
-    el.style.bottom = `${bottom}px`;
-    el.style.width = `${width}px`;
-    el.style.height = `${height}px`;
+    el.style.position="absolute";
+    el.style.left=`${x}px`;
+    el.style.bottom=`${bottom}px`;
+    el.style.width=`${width}px`;
+    el.style.height=`${height}px`;
 
     world.appendChild(el);
 
-    const obj = {
+    const obj={
         el,
         type,
         x,
         bottom,
         width,
         height,
-        collected: false
+        collected:false
     };
 
     objects.push(obj);
@@ -562,11 +557,10 @@ function createObject(
 
 function createPlatform(
     x,
-    width = 160,
-    height = 55,
-    bottom = 76
-) {
-
+    width=160,
+    height=55,
+    bottom=76
+){
     return createObject(
         "block",
         x,
@@ -577,7 +571,7 @@ function createPlatform(
 }
 
 
-function createSpike(x, bottom = 76) {
+function createSpike(x,bottom=76){
 
     return createObject(
         "spike",
@@ -589,7 +583,7 @@ function createSpike(x, bottom = 76) {
 }
 
 
-function createOrb(x, bottom = 190) {
+function createOrb(x,bottom=190){
 
     return createObject(
         "orb",
@@ -602,33 +596,19 @@ function createOrb(x, bottom = 190) {
 
 
 /* ============================================================
-   FAIR PROCEDURAL GENERATION
+   GENERATION
    ============================================================ */
 
-function generatePattern() {
+function generatePattern(){
 
-    const startX = nextSpawnX;
+    const startX=nextSpawnX;
 
-    const difficulty =
-        Math.min(
-            1,
-            Math.max(
-                0,
-                (speed - 8) / 8
-            )
-        );
-
-    const type =
-        Math.floor(
-            Math.random() * 8
-        );
+    const type=Math.floor(
+        Math.random()*8
+    );
 
 
-    /* --------------------------------------------------------
-       SAFE PLATFORM
-       -------------------------------------------------------- */
-
-    if (type === 0) {
+    if(type===0){
 
         createPlatform(
             startX,
@@ -638,54 +618,32 @@ function generatePattern() {
         );
 
         createOrb(
-            startX + 100,
+            startX+100,
             190
         );
 
-        nextSpawnX =
-            startX + 320;
+        nextSpawnX=startX+320;
     }
 
 
-    /* --------------------------------------------------------
-       SINGLE SPIKE
-       -------------------------------------------------------- */
+    else if(type===1){
 
-    else if (type === 1) {
+        createSpike(startX);
 
-        createSpike(
-            startX
-        );
-
-        nextSpawnX =
-            startX + 260;
+        nextSpawnX=startX+260;
     }
 
 
-    /* --------------------------------------------------------
-       DOUBLE SPIKE
-       -------------------------------------------------------- */
+    else if(type===2){
 
-    else if (type === 2) {
+        createSpike(startX);
+        createSpike(startX+48);
 
-        createSpike(
-            startX
-        );
-
-        createSpike(
-            startX + 48
-        );
-
-        nextSpawnX =
-            startX + 280;
+        nextSpawnX=startX+280;
     }
 
 
-    /* --------------------------------------------------------
-       PLATFORM + SPIKE
-       -------------------------------------------------------- */
-
-    else if (type === 3) {
+    else if(type===3){
 
         createPlatform(
             startX,
@@ -695,19 +653,14 @@ function generatePattern() {
         );
 
         createSpike(
-            startX + 235
+            startX+235
         );
 
-        nextSpawnX =
-            startX + 430;
+        nextSpawnX=startX+430;
     }
 
 
-    /* --------------------------------------------------------
-       HIGH PLATFORM
-       -------------------------------------------------------- */
-
-    else if (type === 4) {
+    else if(type===4){
 
         createPlatform(
             startX,
@@ -717,20 +670,15 @@ function generatePattern() {
         );
 
         createOrb(
-            startX + 75,
+            startX+75,
             245
         );
 
-        nextSpawnX =
-            startX + 340;
+        nextSpawnX=startX+340;
     }
 
 
-    /* --------------------------------------------------------
-       STAIRS
-       -------------------------------------------------------- */
-
-    else if (type === 5) {
+    else if(type===5){
 
         createPlatform(
             startX,
@@ -740,56 +688,44 @@ function generatePattern() {
         );
 
         createPlatform(
-            startX + 155,
+            startX+155,
             140,
             55,
             125
         );
 
         createPlatform(
-            startX + 310,
+            startX+310,
             140,
             55,
             174
         );
 
-        nextSpawnX =
-            startX + 500;
+        nextSpawnX=startX+500;
     }
 
 
-    /* --------------------------------------------------------
-       SPIKE + PLATFORM
-       -------------------------------------------------------- */
+    else if(type===6){
 
-    else if (type === 6) {
-
-        createSpike(
-            startX
-        );
+        createSpike(startX);
 
         createPlatform(
-            startX + 115,
+            startX+115,
             220,
             55,
             76
         );
 
         createOrb(
-            startX + 195,
+            startX+195,
             190
         );
 
-        nextSpawnX =
-            startX + 430;
+        nextSpawnX=startX+430;
     }
 
 
-    /* --------------------------------------------------------
-       FAST SECTION
-       -------------------------------------------------------- */
-
-    else {
+    else{
 
         createPlatform(
             startX,
@@ -799,66 +735,54 @@ function generatePattern() {
         );
 
         createSpike(
-            startX + 150
+            startX+150
         );
 
         createPlatform(
-            startX + 225,
+            startX+225,
             140,
             55,
             76
         );
 
         createSpike(
-            startX + 390
+            startX+390
         );
 
-        nextSpawnX =
-            startX + 550;
+        nextSpawnX=startX+550;
     }
 
 
-    /*
-       NEVER allow generation to become too close.
-    */
+    const minimumGap=Math.max(
+        260,
+        440-speed*11
+    );
 
-    const minimumGap =
-        Math.max(
-            260,
-            440 - speed * 11
-        );
-
-    if (
-        nextSpawnX <
-        startX + minimumGap
-    ) {
-
-        nextSpawnX =
-            startX + minimumGap;
+    if(
+        nextSpawnX<
+        startX+minimumGap
+    ){
+        nextSpawnX=
+            startX+minimumGap;
     }
 }
 
 
-/* ============================================================
-   GENERATE AHEAD
-   ============================================================ */
+function generateAhead(){
 
-function generateAhead() {
-
-    const target =
-        cameraX +
-        window.innerWidth +
+    const target=
+        cameraX+
+        window.innerWidth+
         1200;
 
-    let safety = 0;
+    let safety=0;
 
-    while (
-        nextSpawnX < target &&
-        safety < 20
-    ) {
+    while(
+        nextSpawnX<target &&
+        safety<30
+    ){
 
         generatePattern();
-
         safety++;
     }
 }
@@ -868,12 +792,18 @@ function generateAhead() {
    CAMERA
    ============================================================ */
 
-function updateCamera(dt) {
+function updateCamera(dt){
 
-    cameraX += speed * dt;
+    cameraX+=speed*dt;
 
-    world.style.transform =
-        `translate3d(${-cameraX}px, 0, 0)`;
+    /*
+       ONLY #world moves.
+       #player is outside #world,
+       so it remains visible.
+    */
+
+    world.style.transform=
+        `translate3d(${-cameraX}px,0,0)`;
 }
 
 
@@ -881,46 +811,31 @@ function updateCamera(dt) {
    PLAYER
    ============================================================ */
 
-function updatePlayer(dt) {
+function updatePlayer(dt){
 
-    velocityY -= gravity * dt;
+    velocityY-=gravity*dt;
 
-    y += velocityY * dt;
+    y+=velocityY*dt;
 
-    if (y <= 0) {
+    if(y<=0){
 
-        y = 0;
-        velocityY = 0;
-        jumpsUsed = 0;
+        y=0;
+        velocityY=0;
+        jumpsUsed=0;
     }
 
-    /*
-       Player bottom is always 76px above
-       the world bottom.
-    */
+    player.style.bottom=
+        `${76+y}px`;
 
-    player.style.bottom =
-        `${76 + y}px`;
+    rotation+=
+        velocityY*dt*2.5;
 
-    rotation +=
-        velocityY * dt * 2.5;
-
-    if (Math.abs(rotation) > 360) {
-        rotation %= 360;
+    if(Math.abs(rotation)>360){
+        rotation%=360;
     }
 
-    player.style.transform =
+    player.style.transform=
         `rotate(${rotation}deg)`;
-}
-
-
-/* ============================================================
-   PLAYER RECT
-   ============================================================ */
-
-function getPlayerRect() {
-
-    return player.getBoundingClientRect();
 }
 
 
@@ -928,103 +843,78 @@ function getPlayerRect() {
    PLATFORM COLLISION
    ============================================================ */
 
-function checkPlatforms() {
+function checkPlatforms(){
 
-    const p =
-        getPlayerRect();
+    const p=
+        player.getBoundingClientRect();
 
-    const playerBottom =
-        p.bottom;
+    const playerBottom=p.bottom;
+    const playerTop=p.top;
 
-    const playerTop =
-        p.top;
+    const previousBottom=
+        playerBottom-velocityY;
 
-    const previousBottom =
-        playerBottom -
-        velocityY;
+    for(const obj of objects){
 
-
-    for (const obj of objects) {
-
-        if (obj.type !== "block")
+        if(obj.type!=="block")
             continue;
 
-        const r =
+        const r=
             obj.el.getBoundingClientRect();
 
-        const horizontal =
-            p.right > r.left + 5 &&
-            p.left < r.right - 5;
+        const horizontal=
+            p.right>r.left+5 &&
+            p.left<r.right-5;
 
-        if (!horizontal)
+        if(!horizontal)
             continue;
 
 
-        /*
-           One-way platform:
+        /* LAND ON TOP */
 
-           Falling onto the top = land.
-
-           Jumping upward through it = allowed.
-
-           Side collision = death.
-        */
-
-        if (
-            velocityY <= 0 &&
-            previousBottom <= r.top + 8 &&
-            playerBottom >= r.top
-        ) {
+        if(
+            velocityY<=0 &&
+            previousBottom<=r.top+8 &&
+            playerBottom>=r.top
+        ){
 
             /*
-               Convert screen coordinate back
-               into player's world Y.
+               #world is moving,
+               #player is not.
 
-               Player CSS bottom is:
-                   76 + y
-
-               World screen bottom:
-                   worldRect.bottom
-
-               Platform top:
-                   r.top
+               Convert the platform's
+               screen position to player Y.
             */
 
-            const worldRect =
+            const worldRect=
                 world.getBoundingClientRect();
 
-            const desiredBottom =
-                worldRect.bottom -
-                r.top;
+            const desiredBottom=
+                worldRect.bottom-r.top;
 
-            y =
-                desiredBottom - 76;
+            y=
+                desiredBottom-76;
 
-            if (y < 0)
-                y = 0;
+            if(y<0)
+                y=0;
 
-            velocityY = 0;
-            jumpsUsed = 0;
+            velocityY=0;
+            jumpsUsed=0;
 
-            player.style.bottom =
-                `${76 + y}px`;
+            player.style.bottom=
+                `${76+y}px`;
 
             return;
         }
 
 
-        /*
-           Side collision.
-        */
+        /* SIDE COLLISION */
 
-        const verticalOverlap =
-            playerBottom > r.top + 8 &&
-            playerTop < r.bottom - 8;
+        const verticalOverlap=
+            playerBottom>r.top+8 &&
+            playerTop<r.bottom-8;
 
-        if (
-            verticalOverlap &&
-            velocityY > -3
-        ) {
+        if(verticalOverlap){
 
             die();
             return;
@@ -1034,29 +924,29 @@ function checkPlatforms() {
 
 
 /* ============================================================
-   SPIKE COLLISION
+   SPIKES
    ============================================================ */
 
-function checkSpikes() {
+function checkSpikes(){
 
-    const p =
-        getPlayerRect();
+    const p=
+        player.getBoundingClientRect();
 
-    for (const obj of objects) {
+    for(const obj of objects){
 
-        if (obj.type !== "spike")
+        if(obj.type!=="spike")
             continue;
 
-        const r =
+        const r=
             obj.el.getBoundingClientRect();
 
-        const hit =
-            p.right - 7 > r.left &&
-            p.left + 7 < r.right &&
-            p.bottom - 5 > r.top &&
-            p.top + 7 < r.bottom;
+        const hit=
+            p.right-7>r.left &&
+            p.left+7<r.right &&
+            p.bottom-5>r.top &&
+            p.top+7<r.bottom;
 
-        if (hit) {
+        if(hit){
 
             die();
             return;
@@ -1069,44 +959,37 @@ function checkSpikes() {
    ORBS
    ============================================================ */
 
-function collectOrbs() {
+function collectOrbs(){
 
-    const p =
-        getPlayerRect();
+    const p=
+        player.getBoundingClientRect();
 
-    for (const obj of objects) {
+    for(const obj of objects){
 
-        if (
-            obj.type !== "orb" ||
+        if(
+            obj.type!=="orb" ||
             obj.collected
         )
             continue;
 
-        const r =
+        const r=
             obj.el.getBoundingClientRect();
 
-        const hit =
-            p.right > r.left &&
-            p.left < r.right &&
-            p.bottom > r.top &&
-            p.top < r.bottom;
+        const hit=
+            p.right>r.left &&
+            p.left<r.right &&
+            p.bottom>r.top &&
+            p.top<r.bottom;
 
-        if (hit) {
+        if(hit){
 
-            obj.collected = true;
+            obj.collected=true;
 
             obj.el.remove();
 
-            score +=
-                100 * combo;
+            score+=100*combo;
 
             combo++;
-
-            bestCombo =
-                Math.max(
-                    bestCombo,
-                    combo
-                );
 
             spawnParticles(
                 r.left,
@@ -1125,68 +1008,68 @@ function collectOrbs() {
 function spawnParticles(
     x,
     yPos,
-    amount = 8
-) {
+    amount=8
+){
 
-    for (
-        let i = 0;
-        i < amount;
+    for(
+        let i=0;
+        i<amount;
         i++
-    ) {
+    ){
 
-        const particle =
+        const particle=
             document.createElement("div");
 
-        particle.className =
+        particle.className=
             "particle";
 
-        particle.style.left =
+        particle.style.left=
             `${x}px`;
 
-        particle.style.top =
+        particle.style.top=
             `${yPos}px`;
 
         game.appendChild(
             particle
         );
 
-        const angle =
-            Math.random() *
-            Math.PI * 2;
+        const angle=
+            Math.random()*
+            Math.PI*2;
 
-        const power =
-            30 +
-            Math.random() * 70;
+        const power=
+            30+
+            Math.random()*70;
 
-        const dx =
-            Math.cos(angle) *
-            power;
+        const dx=
+            Math.cos(angle)*power;
 
-        const dy =
-            Math.sin(angle) *
-            power;
+        const dy=
+            Math.sin(angle)*power;
 
-        let life = 1;
+        let life=1;
 
-        function animate() {
+        function animate(){
 
-            life -= .035;
+            life-=.035;
 
-            particle.style.transform =
-                `translate(${dx * (1-life)}px,
-                           ${dy * (1-life)}px)
-                 scale(${life})`;
+            particle.style.transform=
+                `translate(
+                    ${dx*(1-life)}px,
+                    ${dy*(1-life)}px
+                )
+                scale(${life})`;
 
-            particle.style.opacity =
+            particle.style.opacity=
                 life;
 
-            if (life > 0) {
+            if(life>0){
 
                 requestAnimationFrame(
                     animate
                 );
 
-            } else {
+            }else{
 
                 particle.remove();
             }
@@ -1198,68 +1081,27 @@ function spawnParticles(
 
 
 /* ============================================================
-   CLEANUP
-   ============================================================ */
-
-function cleanupObjects() {
-
-    const removeBefore =
-        cameraX - 800;
-
-    for (
-        let i = objects.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const obj =
-            objects[i];
-
-        if (
-            obj.x +
-            obj.width <
-            removeBefore
-        ) {
-
-            if (
-                obj.el.parentNode
-            ) {
-
-                obj.el.remove();
-            }
-
-            objects.splice(
-                i,
-                1
-            );
-        }
-    }
-}
-
-
-/* ============================================================
    DASH
    ============================================================ */
 
-function dash(direction) {
+function dash(direction){
 
-    if (
+    if(
         !running ||
-        dashCooldown > 0
+        dashCooldown>0
     )
         return;
 
-    dashVelocity =
-        direction *
-        dashPower;
+    dashVelocity=
+        direction*dashPower;
 
-    dashTimer =
+    dashTimer=
         dashDuration;
 
-    dashCooldown =
+    dashCooldown=
         dashCooldownTime;
 
-    statusEl.textContent =
+    statusEl.textContent=
         "DASH";
 
     spawnParticles(
@@ -1270,29 +1112,37 @@ function dash(direction) {
 }
 
 
-function updateDash(dt) {
+function updateDash(dt){
 
-    if (dashCooldown > 0) {
+    if(dashCooldown>0){
 
-        dashCooldown -= dt;
+        dashCooldown-=dt;
 
-        if (dashCooldown < 0)
-            dashCooldown = 0;
+        if(dashCooldown<0)
+            dashCooldown=0;
     }
 
-    if (dashTimer > 0) {
+    /*
+       IMPORTANT:
+       Dash is visual only now.
 
-        dashTimer -= dt;
+       We do NOT permanently change
+       the player's screen position,
+       preventing it from disappearing.
+    */
 
-        player.style.left =
-            `calc(16% + ${dashVelocity * 2}px)`;
+    if(dashTimer>0){
 
-    } else {
+        dashTimer-=dt;
 
-        player.style.left =
-            "16%";
+        player.style.filter=
+            "brightness(1.5) drop-shadow(0 0 15px #00eaff)";
 
-        dashVelocity = 0;
+    }else{
+
+        player.style.filter=
+            "";
+        dashVelocity=0;
     }
 }
 
@@ -1301,25 +1151,20 @@ function updateDash(dt) {
    JUMP
    ============================================================ */
 
-function jump() {
+function jump(){
 
-    if (!running)
+    if(!running)
         return;
 
-    if (
-        jumpsUsed <
+    if(
+        jumpsUsed<
         maxJumps
-    ) {
+    ){
 
-        velocityY =
+        velocityY=
             jumpPower;
 
         jumpsUsed++;
-
-        combo = Math.max(
-            1,
-            combo
-        );
 
         spawnParticles(
             player.getBoundingClientRect().left,
@@ -1331,36 +1176,38 @@ function jump() {
 
 
 /* ============================================================
-   RESET GENERATION
+   RESET
    ============================================================ */
 
-function resetGeneration() {
+function resetGeneration(){
 
-    for (const obj of objects) {
+    for(const obj of objects){
 
-        if (
+        if(
             obj.el &&
             obj.el.parentNode
-        ) {
-
+        ){
             obj.el.remove();
         }
     }
 
-    objects.length = 0;
+    objects.length=0;
 
-    cameraX = 0;
+    cameraX=0;
 
     /*
-       FIRST generated object is always
-       well inside the world.
+       Start the first object
+       safely ahead of the player.
     */
 
-    nextSpawnX =
+    nextSpawnX=
         Math.max(
             650,
-            window.innerWidth + 250
+            window.innerWidth+250
         );
+
+    world.style.transform=
+        "translate3d(0,0,0)";
 
     generateAhead();
 }
@@ -1370,62 +1217,44 @@ function resetGeneration() {
    START
    ============================================================ */
 
-function startGame() {
+function startGame(){
 
-    running = true;
-    dead = false;
+    running=true;
+    dead=false;
 
-    cameraX = 0;
+    speed=8;
 
-    speed = 8;
+    distance=0;
+    score=0;
+    combo=1;
 
-    distance = 0;
-    score = 0;
+    y=0;
+    velocityY=0;
 
-    combo = 1;
-    bestCombo = 1;
+    jumpsUsed=0;
 
-    y = 0;
-    velocityY = 0;
+    dashVelocity=0;
+    dashTimer=0;
+    dashCooldown=0;
 
-    jumpsUsed = 0;
+    rotation=0;
 
-    dashVelocity = 0;
-    dashTimer = 0;
-    dashCooldown = 0;
+    player.style.left="16%";
+    player.style.bottom="76px";
+    player.style.transform="rotate(0deg)";
+    player.style.filter="";
 
-    rotation = 0;
+    scoreEl.textContent="0";
+    comboEl.textContent="x1";
+    progressEl.style.width="0%";
+    statusEl.textContent="RUNNING";
 
-    player.style.left =
-        "16%";
-
-    player.style.bottom =
-        "76px";
-
-    player.style.transform =
-        "rotate(0deg)";
-
-    scoreEl.textContent =
-        "0";
-
-    comboEl.textContent =
-        "x1";
-
-    progressEl.style.width =
-        "0%";
-
-    statusEl.textContent =
-        "RUNNING";
-
-    startScreen.style.display =
-        "none";
-
-    gameOver.style.display =
-        "none";
+    startScreen.style.display="none";
+    gameOver.style.display="none";
 
     resetGeneration();
 
-    lastTime =
+    lastTime=
         performance.now();
 
     requestAnimationFrame(
@@ -1438,30 +1267,28 @@ function startGame() {
    DEATH
    ============================================================ */
 
-function die() {
+function die(){
 
-    if (
+    if(
         dead ||
         !running
     )
         return;
 
-    dead = true;
-    running = false;
+    dead=true;
+    running=false;
 
-    finalScore.textContent =
+    finalScore.textContent=
         Math.floor(score);
 
-    statusEl.textContent =
+    statusEl.textContent=
         "CRASHED";
 
-    flash.style.opacity =
-        ".7";
+    flash.style.opacity=".7";
 
-    setTimeout(() => {
-        flash.style.opacity =
-            "0";
-    }, 100);
+    setTimeout(()=>{
+        flash.style.opacity="0";
+    },100);
 
     spawnParticles(
         player.getBoundingClientRect().left,
@@ -1469,12 +1296,9 @@ function die() {
         25
     );
 
-    setTimeout(() => {
-
-        gameOver.style.display =
-            "flex";
-
-    }, 300);
+    setTimeout(()=>{
+        gameOver.style.display="flex";
+    },300);
 }
 
 
@@ -1482,112 +1306,73 @@ function die() {
    GAME LOOP
    ============================================================ */
 
-function gameLoop(time) {
+function gameLoop(time){
 
-    if (!running)
+    if(!running)
         return;
 
-    let dt =
-        (time - lastTime) /
-        16.6667;
+    let dt=
+        (time-lastTime)/16.6667;
 
-    lastTime = time;
+    lastTime=time;
 
-    /*
-       Prevent huge physics jumps
-       after tab switching.
-    */
+    dt=Math.min(dt,2);
 
-    dt =
-        Math.min(
-            dt,
-            2
-        );
+    speed+=.0032*dt;
 
+    speed=Math.min(
+        speed,
+        maxSpeed
+    );
 
-    /*
-       SPEED RAMP
-    */
+    distance+=speed*dt;
 
-    speed +=
-        .0032 *
-        dt;
-
-    speed =
-        Math.min(
-            speed,
-            maxSpeed
-        );
-
-
-    /*
-       DISTANCE / SCORE
-    */
-
-    distance +=
-        speed *
-        dt;
-
-    score +=
-        speed *
-        dt *
+    score+=
+        speed*
+        dt*
         .08;
 
 
-    /*
-       GAME SYSTEMS
-    */
-
     updatePlayer(dt);
-
     updateDash(dt);
-
     updateCamera(dt);
 
     generateAhead();
 
     checkPlatforms();
-
     checkSpikes();
-
     collectOrbs();
 
-    cleanupObjects();
 
-
-    /*
-       UI
-    */
-
-    scoreEl.textContent =
+    scoreEl.textContent=
         Math.floor(score);
 
-    comboEl.textContent =
+    comboEl.textContent=
         `x${combo}`;
 
-    const progress =
+    const progress=
         Math.min(
             100,
-            distance / 20
+            distance/20
         );
 
-    progressEl.style.width =
+    progressEl.style.width=
         `${progress}%`;
 
 
-    if (speed < 10) {
+    if(speed<10){
 
-        statusEl.textContent =
+        statusEl.textContent=
             "RUNNING";
 
-    } else if (speed < 13) {
+    }else if(speed<13){
 
-        statusEl.textContent =
+        statusEl.textContent=
             "HYPER";
 
-    } else {
+    }else{
 
-        statusEl.textContent =
+        statusEl.textContent=
             "OVERDRIVE";
     }
 
@@ -1604,46 +1389,43 @@ function gameLoop(time) {
 
 document.addEventListener(
     "keydown",
-    e => {
+    e=>{
 
-        if (
-            e.code === "Space" ||
-            e.code === "ArrowUp" ||
-            e.code === "KeyW"
-        ) {
+        if(
+            e.code==="Space" ||
+            e.code==="ArrowUp" ||
+            e.code==="KeyW"
+        ){
 
             e.preventDefault();
-
             jump();
         }
 
 
-        if (
-            e.code === "ArrowRight" ||
-            e.code === "KeyD"
-        ) {
+        if(
+            e.code==="ArrowRight" ||
+            e.code==="KeyD"
+        ){
 
             e.preventDefault();
-
             dash(1);
         }
 
 
-        if (
-            e.code === "ArrowLeft" ||
-            e.code === "KeyA"
-        ) {
+        if(
+            e.code==="ArrowLeft" ||
+            e.code==="KeyA"
+        ){
 
             e.preventDefault();
-
             dash(-1);
         }
 
 
-        if (
-            e.code === "KeyR" &&
+        if(
+            e.code==="KeyR" &&
             dead
-        ) {
+        ){
 
             startGame();
         }
@@ -1657,17 +1439,15 @@ document.addEventListener(
 
 game.addEventListener(
     "pointerdown",
-    e => {
+    e=>{
 
-        if (
-            e.target.tagName === "BUTTON"
+        if(
+            e.target.tagName==="BUTTON"
         )
             return;
 
-        if (running) {
-
+        if(running)
             jump();
-        }
     }
 );
 
@@ -1693,17 +1473,9 @@ restartBtn.addEventListener(
 
 window.addEventListener(
     "resize",
-    () => {
-
-        if (!running)
-            return;
-
-        /*
-           Re-generate only if needed.
-           Existing objects stay in WORLD coordinates.
-        */
-
-        generateAhead();
+    ()=>{
+        if(running)
+            generateAhead();
     }
 );
 </script>
