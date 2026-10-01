@@ -23,8 +23,8 @@ html,body{
 
 body{
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 }
 
 #game{
@@ -37,10 +37,7 @@ body{
         #292660 0%,
         #10102b 38%,
         #05050d 100%);
-    transition:transform .05s;
 }
-
-/* BACKGROUND */
 
 #sky{
     position:absolute;
@@ -67,9 +64,7 @@ body{
         linear-gradient(rgba(0,234,255,.12) 1px,transparent 1px),
         linear-gradient(90deg,rgba(0,234,255,.12) 1px,transparent 1px);
     background-size:55px 55px;
-    transform:
-        perspective(450px)
-        rotateX(58deg);
+    transform:perspective(450px) rotateX(58deg);
     transform-origin:center bottom;
 }
 
@@ -99,7 +94,7 @@ body{
 #hud{
     position:absolute;
     z-index:50;
-    top:17px;
+    top:15px;
     width:100%;
     text-align:center;
     color:white;
@@ -117,15 +112,15 @@ body{
 }
 
 #score{
-    margin-top:4px;
+    margin-top:3px;
     font-size:18px;
     font-weight:900;
     letter-spacing:3px;
 }
 
 #combo{
-    height:25px;
-    margin-top:3px;
+    height:24px;
+    margin-top:2px;
     font-size:16px;
     font-weight:900;
     color:#ffe45c;
@@ -135,7 +130,7 @@ body{
 #bar{
     width:min(600px,82vw);
     height:7px;
-    margin:4px auto;
+    margin:3px auto;
     background:rgba(255,255,255,.12);
     border-radius:10px;
     overflow:hidden;
@@ -144,18 +139,17 @@ body{
 #progress{
     height:100%;
     width:0;
-    background:
-        linear-gradient(
-            90deg,
-            #00eaff,
-            #744cff,
-            #ff38a8
-        );
+    background:linear-gradient(
+        90deg,
+        #00eaff,
+        #744cff,
+        #ff38a8
+    );
     box-shadow:0 0 15px #00eaff;
 }
 
 #status{
-    margin-top:5px;
+    margin-top:4px;
     font-size:11px;
     letter-spacing:1.5px;
     opacity:.7;
@@ -177,15 +171,8 @@ body{
     left:0;
     width:100%;
     height:76px;
-
     border-top:4px solid #00eaff;
-
-    background:
-        linear-gradient(
-            #171743,
-            #080817
-        );
-
+    background:linear-gradient(#171743,#080817);
     box-shadow:
         0 -5px 25px rgba(0,234,255,.35),
         inset 0 15px 30px rgba(0,0,0,.5);
@@ -195,14 +182,12 @@ body{
     content:"";
     position:absolute;
     inset:15px 0 0;
-
     background-image:
         linear-gradient(
             90deg,
             transparent 0 38px,
             rgba(0,234,255,.1) 39px 40px
         );
-
     background-size:40px 100%;
 }
 
@@ -252,6 +237,70 @@ body{
     right:7px;
 }
 
+/* PLATFORMS */
+
+.block{
+    width:70px;
+    height:55px;
+
+    border:3px solid #8975ff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4334a5,
+            #171744
+        );
+
+    box-shadow:
+        0 0 12px #6552ff,
+        inset 0 0 15px rgba(150,100,255,.25);
+
+    /*
+       The bright top makes it obvious
+       that this is a safe landing surface.
+    */
+    border-top:5px solid #b5a9ff;
+}
+
+.block:after{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border:2px solid rgba(255,255,255,.15);
+}
+
+/* SPIKES */
+
+.spike{
+    width:0;
+    height:0;
+
+    border-left:24px solid transparent;
+    border-right:24px solid transparent;
+    border-bottom:52px solid #ff3867;
+
+    filter:
+        drop-shadow(0 0 7px #ff3867)
+        drop-shadow(0 0 18px rgba(255,56,103,.65));
+}
+
+/* ORBS */
+
+.orb{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+
+    background:#ffe45c;
+
+    border:3px solid white;
+
+    box-shadow:
+        0 0 10px #ffe45c,
+        0 0 25px #ffb700;
+}
+
 /* DASH TRAIL */
 
 .dashTrail{
@@ -282,72 +331,10 @@ body{
         opacity:.8;
         transform:scale(1);
     }
-
     to{
         opacity:0;
         transform:scale(.3);
     }
-}
-
-/* OBSTACLES */
-
-.obstacle{
-    position:absolute;
-    z-index:10;
-}
-
-.spike{
-    width:0;
-    height:0;
-
-    border-left:24px solid transparent;
-    border-right:24px solid transparent;
-    border-bottom:52px solid #ff3867;
-
-    filter:
-        drop-shadow(0 0 7px #ff3867)
-        drop-shadow(0 0 18px rgba(255,56,103,.65));
-}
-
-.block{
-    width:55px;
-    height:55px;
-
-    border:3px solid #8975ff;
-
-    background:
-        linear-gradient(
-            135deg,
-            #4334a5,
-            #171744
-        );
-
-    box-shadow:
-        0 0 12px #6552ff,
-        inset 0 0 15px rgba(150,100,255,.25);
-}
-
-.block:after{
-    content:"";
-    position:absolute;
-    inset:8px;
-    border:2px solid rgba(255,255,255,.2);
-}
-
-/* ORB */
-
-.orb{
-    width:22px;
-    height:22px;
-    border-radius:50%;
-
-    background:#ffe45c;
-
-    border:3px solid white;
-
-    box-shadow:
-        0 0 10px #ffe45c,
-        0 0 25px #ffb700;
 }
 
 /* SPEED LINES */
@@ -355,14 +342,12 @@ body{
 .speedline{
     position:absolute;
     height:2px;
-
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(255,255,255,.55)
+            rgba(255,255,255,.6)
         );
-
     z-index:1;
     pointer-events:none;
 }
@@ -373,14 +358,9 @@ body{
     position:absolute;
     width:5px;
     height:5px;
-
     border-radius:50%;
-
     background:#00eaff;
-
-    box-shadow:
-        0 0 9px #00eaff;
-
+    box-shadow:0 0 9px #00eaff;
     pointer-events:none;
 }
 
@@ -389,28 +369,17 @@ body{
 .popup{
     position:absolute;
     z-index:60;
-
     color:white;
-
     font-weight:1000;
     font-size:17px;
-
     pointer-events:none;
-
-    text-shadow:
-        0 0 10px currentColor;
-
-    animation:
-        pop .6s forwards;
+    text-shadow:0 0 10px currentColor;
+    animation:pop .6s forwards;
 }
 
 @keyframes pop{
-
     0%{
-        transform:
-            translateY(0)
-            scale(.7);
-
+        transform:translateY(0) scale(.7);
         opacity:0;
     }
 
@@ -419,10 +388,7 @@ body{
     }
 
     100%{
-        transform:
-            translateY(-45px)
-            scale(1.15);
-
+        transform:translateY(-45px) scale(1.15);
         opacity:0;
     }
 }
@@ -438,9 +404,7 @@ body{
     justify-content:center;
     align-items:center;
 
-    background:
-        rgba(3,3,13,.72);
-
+    background:rgba(3,3,13,.72);
     backdrop-filter:blur(10px);
 }
 
@@ -452,13 +416,10 @@ body{
     text-align:center;
     color:white;
 
-    border:
-        1px solid rgba(0,234,255,.5);
-
+    border:1px solid rgba(0,234,255,.5);
     border-radius:22px;
 
-    background:
-        rgba(10,10,35,.93);
+    background:rgba(10,10,35,.93);
 
     box-shadow:
         0 0 40px rgba(0,234,255,.18),
@@ -466,9 +427,7 @@ body{
 }
 
 .panel h1{
-    font-size:
-        clamp(40px,10vw,70px);
-
+    font-size:clamp(40px,10vw,70px);
     font-weight:1000;
     letter-spacing:5px;
 
@@ -486,8 +445,11 @@ body{
 .controls{
     margin-top:18px;
     padding:13px;
+
     border-radius:12px;
+
     background:rgba(255,255,255,.05);
+
     font-size:13px;
     color:#aeb8e8;
     line-height:1.8;
@@ -550,10 +512,8 @@ button:hover{
     position:absolute;
     inset:0;
     z-index:80;
-
     background:white;
     opacity:0;
-
     pointer-events:none;
 }
 </style>
@@ -563,125 +523,116 @@ button:hover{
 
 <div id="game">
 
-    <div id="sky"></div>
-    <div id="grid"></div>
+<div id="sky"></div>
+<div id="grid"></div>
 
-    <div class="glow g1"></div>
-    <div class="glow g2"></div>
+<div class="glow g1"></div>
+<div class="glow g2"></div>
 
-    <div id="hud">
+<div id="hud">
 
-        <div class="logo">
-            NEON DASH
-        </div>
+    <div class="logo">
+        NEON DASH
+    </div>
 
-        <div id="score">
-            000000
-        </div>
+    <div id="score">
+        000000
+    </div>
 
-        <div id="combo"></div>
+    <div id="combo"></div>
 
-        <div id="bar">
-            <div id="progress"></div>
-        </div>
+    <div id="bar">
+        <div id="progress"></div>
+    </div>
 
-        <div id="status">
-            DOUBLE JUMP: READY
-            &nbsp; • &nbsp;
-            DASH: READY
-        </div>
+    <div id="status">
+        DOUBLE JUMP: READY • DASH: READY
+    </div>
+
+</div>
+
+<div id="world">
+
+    <div id="player"></div>
+
+    <div id="ground"></div>
+
+</div>
+
+<div id="flash"></div>
+
+<div id="overlay">
+
+<div class="panel">
+
+<div id="start">
+
+    <h1>NEON DASH</h1>
+
+    <p>
+        RUN. JUMP. DASH. SURVIVE.
+    </p>
+
+    <div class="controls">
+
+        <span class="key">SPACE</span>
+        /
+        <span class="key">↑</span>
+        Jump
+
+        <br>
+
+        Press twice in air =
+        <b>DOUBLE JUMP</b>
+
+        <br>
+
+        <span class="key">A</span>
+        /
+        <span class="key">D</span>
+        Dash
+
+        <br>
+
+        Platforms are safe
+        from the top.
 
     </div>
 
-    <div id="world">
+    <button onclick="startGame()">
+        START RUN
+    </button>
 
-        <div id="player"></div>
+</div>
 
-        <div id="ground"></div>
+<div id="gameOver">
 
+    <h1>CRASH!</h1>
+
+    <div
+        class="bigScore"
+        id="finalScore">
+        0
     </div>
 
-    <div id="flash"></div>
+    <p id="bestScore"></p>
 
-    <div id="overlay">
+    <button onclick="restart()">
+        RUN AGAIN
+    </button>
 
-        <div class="panel">
+</div>
 
-            <div id="start">
-
-                <h1>NEON DASH</h1>
-
-                <p>
-                    RUN. JUMP. DASH. SURVIVE.
-                </p>
-
-                <div class="controls">
-
-                    <span class="key">SPACE</span>
-                    /
-                    <span class="key">↑</span>
-                    Jump
-
-                    <br>
-
-                    Press twice in air =
-                    <b>DOUBLE JUMP</b>
-
-                    <br>
-
-                    <span class="key">SHIFT + ←</span>
-                    Dash Left
-
-                    <br>
-
-                    <span class="key">SHIFT + →</span>
-                    Dash Right
-
-                    <br>
-
-                    <span class="key">A</span>
-                    /
-                    <span class="key">D</span>
-                    Dash
-
-                </div>
-
-                <button onclick="startGame()">
-                    START RUN
-                </button>
-
-            </div>
-
-            <div id="gameOver">
-
-                <h1>CRASH!</h1>
-
-                <div
-                    class="bigScore"
-                    id="finalScore"
-                >
-                    0
-                </div>
-
-                <p id="bestScore"></p>
-
-                <button onclick="restart()">
-                    RUN AGAIN
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
+</div>
+</div>
 
 </div>
 
 <script>
 
-/* =========================================
+/* =========================
    AUDIO
-========================================= */
+========================= */
 
 let audioCtx=null;
 
@@ -690,10 +641,10 @@ function audio(){
     if(!audioCtx){
 
         audioCtx=
-            new(
-                window.AudioContext ||
-                window.webkitAudioContext
-            )();
+        new(
+            window.AudioContext||
+            window.webkitAudioContext
+        )();
     }
 }
 
@@ -736,66 +687,65 @@ function beep(
 }
 
 
-/* =========================================
+/* =========================
    ELEMENTS
-========================================= */
+========================= */
 
 const game=
-    document.getElementById("game");
+document.getElementById("game");
 
 const world=
-    document.getElementById("world");
+document.getElementById("world");
 
 const player=
-    document.getElementById("player");
+document.getElementById("player");
 
 const scoreEl=
-    document.getElementById("score");
+document.getElementById("score");
 
 const comboEl=
-    document.getElementById("combo");
+document.getElementById("combo");
 
 const progress=
-    document.getElementById("progress");
+document.getElementById("progress");
 
 const status=
-    document.getElementById("status");
+document.getElementById("status");
 
 const overlay=
-    document.getElementById("overlay");
+document.getElementById("overlay");
 
 const startScreen=
-    document.getElementById("start");
+document.getElementById("start");
 
 const gameOverScreen=
-    document.getElementById("gameOver");
+document.getElementById("gameOver");
 
 const finalScore=
-    document.getElementById("finalScore");
+document.getElementById("finalScore");
 
 const bestScore=
-    document.getElementById("bestScore");
+document.getElementById("bestScore");
 
 const flash=
-    document.getElementById("flash");
+document.getElementById("flash");
 
 
-/* =========================================
+/* =========================
    GAME STATE
-========================================= */
+========================= */
 
 let running=false;
 let dead=false;
 
 let y=0;
+let previousY=0;
+
 let velocity=0;
 let rotation=0;
 
 const gravity=.82;
 const jumpPower=15.3;
-
-
-/* DOUBLE JUMP */
 
 let jumpsUsed=0;
 const maxJumps=2;
@@ -804,22 +754,26 @@ const maxJumps=2;
 /* HORIZONTAL DASH */
 
 let playerX=0;
-
 let dashVelocity=0;
-
 let dashCooldown=0;
+let dashTimer=0;
 
 const dashPower=18;
 const dashDuration=13;
 
-let dashTimer=0;
 
-let dashDirection=0;
+/* SPEED */
 
+let speed=8.0;
 
-/* WORLD */
+/*
+   Previously 6.3.
+   The game now starts
+   considerably faster.
+*/
 
-let speed=6.3;
+const maxSpeed=16;
+
 let distance=0;
 let score=0;
 
@@ -842,43 +796,40 @@ let lines=[];
 let shake=0;
 
 let best=
-    Number(
-        localStorage.getItem(
-            "neonDashBest"
-        )||0
-    );
+Number(
+localStorage.getItem("neonDashBest")||0
+);
 
 
-/* =========================================
-   BACKGROUND STARS
-========================================= */
+/* =========================
+   STARS
+========================= */
 
 for(let i=0;i<70;i++){
 
     const s=
-        document.createElement("div");
+    document.createElement("div");
 
     s.className="star";
 
     s.style.left=
-        Math.random()*100+"%";
+    Math.random()*100+"%";
 
     s.style.top=
-        Math.random()*75+"%";
+    Math.random()*75+"%";
 
     s.style.opacity=
-        .15+
-        Math.random()*.55;
+    .15+Math.random()*.55;
 
     document
-        .getElementById("sky")
-        .appendChild(s);
+    .getElementById("sky")
+    .appendChild(s);
 }
 
 
-/* =========================================
+/* =========================
    START
-========================================= */
+========================= */
 
 function startGame(){
 
@@ -890,40 +841,41 @@ function startGame(){
     overlay.style.display="none";
 
     y=0;
+    previousY=0;
     velocity=0;
     rotation=0;
 
     jumpsUsed=0;
 
     playerX=
-        window.innerWidth*.17;
+    window.innerWidth*.17;
 
     dashVelocity=0;
     dashCooldown=0;
     dashTimer=0;
-    dashDirection=0;
 
-    speed=6.3;
+    /*
+       FASTER START
+    */
+
+    speed=8.0;
+
     distance=0;
     score=0;
 
     combo=0;
     bestCombo=0;
 
-    spawnDistance=350;
+    spawnDistance=280;
 
     clearObjects();
 
     lastTime=
-        performance.now();
+    performance.now();
 
     requestAnimationFrame(loop);
 }
 
-
-/* =========================================
-   RESTART
-========================================= */
 
 function restart(){
 
@@ -934,23 +886,14 @@ function restart(){
 }
 
 
-/* =========================================
+/* =========================
    JUMP
-========================================= */
+========================= */
 
 function jump(){
 
     if(!running||dead)
         return;
-
-
-    /*
-       First jump:
-       available on ground.
-
-       Second jump:
-       available while airborne.
-    */
 
     if(jumpsUsed<maxJumps){
 
@@ -960,8 +903,11 @@ function jump(){
 
         combo++;
 
-        if(combo>bestCombo)
-            bestCombo=combo;
+        bestCombo=
+        Math.max(
+            bestCombo,
+            combo
+        );
 
         if(jumpsUsed===2){
 
@@ -997,9 +943,9 @@ function jump(){
 }
 
 
-/* =========================================
+/* =========================
    DASH
-========================================= */
+========================= */
 
 function dash(direction){
 
@@ -1009,29 +955,24 @@ function dash(direction){
     if(dashCooldown>0)
         return;
 
-
-    dashDirection=direction;
-
     dashVelocity=
-        direction*dashPower;
+    direction*18;
 
-    dashTimer=dashDuration;
+    dashTimer=13;
 
-    dashCooldown=55;
+    dashCooldown=45;
 
     createDashTrail();
 
     createPopup(
         direction>0
-            ? "DASH →"
-            : "← DASH",
+        ?"DASH →"
+        :"← DASH",
         "#00eaff"
     );
 
     beep(
-        direction>0
-            ? 900
-            : 700,
+        direction>0?900:700,
         .12,
         "sawtooth",
         .055
@@ -1041,99 +982,75 @@ function dash(direction){
 }
 
 
-/* =========================================
-   KEYBOARD
-========================================= */
+/* =========================
+   CONTROLS
+========================= */
 
 document.addEventListener(
-    "keydown",
-    e=>{
+"keydown",
+e=>{
 
-        if(
-            e.code==="Space"||
-            e.code==="ArrowUp"||
-            e.code==="KeyW"
-        ){
+    if(
+        e.code==="Space"||
+        e.code==="ArrowUp"||
+        e.code==="KeyW"
+    ){
 
-            e.preventDefault();
-
-            jump();
-
-            return;
-        }
-
-
-        /*
-           DASH CONTROLS
-
-           SHIFT + RIGHT
-           SHIFT + LEFT
-
-           A / D can also dash.
-        */
-
-        if(
-            e.code==="ArrowRight"||
-            e.code==="KeyD"
-        ){
-
-            if(e.shiftKey||e.code==="KeyD")
-                dash(1);
-
-            return;
-        }
-
-
-        if(
-            e.code==="ArrowLeft"||
-            e.code==="KeyA"
-        ){
-
-            if(e.shiftKey||e.code==="KeyA")
-                dash(-1);
-
-            return;
-        }
-
-
-        if(e.code==="KeyR"&&dead){
-
-            restart();
-        }
-
+        e.preventDefault();
+        jump();
+        return;
     }
-);
 
+    if(
+        e.code==="ArrowRight"||
+        e.code==="KeyD"
+    ){
 
-/* =========================================
-   MOUSE / TOUCH
-========================================= */
-
-document.addEventListener(
-    "mousedown",
-    e=>{
-
-        if(e.target.tagName!=="BUTTON")
-            jump();
-
+        dash(1);
+        return;
     }
-);
+
+    if(
+        e.code==="ArrowLeft"||
+        e.code==="KeyA"
+    ){
+
+        dash(-1);
+        return;
+    }
+
+    if(e.code==="KeyR"&&dead){
+        restart();
+    }
+
+});
+
 
 document.addEventListener(
-    "touchstart",
-    e=>{
+"mousedown",
+e=>{
 
-        if(e.target.tagName!=="BUTTON")
-            jump();
+    if(e.target.tagName!=="BUTTON")
+        jump();
 
-    },
-    {passive:true}
+});
+
+
+document.addEventListener(
+"touchstart",
+e=>{
+
+    if(e.target.tagName!=="BUTTON")
+        jump();
+
+},
+{passive:true}
 );
 
 
-/* =========================================
-   OBSTACLES
-========================================= */
+/* =========================
+   OBJECT CREATION
+========================= */
 
 function obstacle(
     type,
@@ -1142,16 +1059,16 @@ function obstacle(
 ){
 
     const el=
-        document.createElement("div");
+    document.createElement("div");
 
     el.className=
-        "obstacle "+type;
+    "obstacle "+type;
 
     el.style.left=
-        x+"px";
+    x+"px";
 
     el.style.bottom=
-        bottom+"px";
+    bottom+"px";
 
     world.appendChild(el);
 
@@ -1163,22 +1080,19 @@ function obstacle(
 }
 
 
-function orb(
-    x,
-    bottom
-){
+function orb(x,bottom){
 
     const el=
-        document.createElement("div");
+    document.createElement("div");
 
     el.className=
-        "obstacle orb";
+    "obstacle orb";
 
     el.style.left=
-        x+"px";
+    x+"px";
 
     el.style.bottom=
-        bottom+"px";
+    bottom+"px";
 
     world.appendChild(el);
 
@@ -1189,42 +1103,35 @@ function orb(
 }
 
 
-/* =========================================
+/* =========================
    FAIR PATTERNS
-========================================= */
+========================= */
 
 function pattern(){
 
     const x=
-        window.innerWidth+100;
+    window.innerWidth+100;
 
     const p=
-        Math.floor(
-            Math.random()*8
-        );
+    Math.floor(
+        Math.random()*8
+    );
 
 
     if(p===0){
 
-        obstacle(
-            "spike",
-            x
-        );
+        obstacle("spike",x);
 
         orb(
-            x+120,
-            145
+            x+110,
+            150
         );
 
     }
 
-
     else if(p===1){
 
-        obstacle(
-            "spike",
-            x
-        );
+        obstacle("spike",x);
 
         obstacle(
             "spike",
@@ -1233,42 +1140,27 @@ function pattern(){
 
         orb(
             x+145,
-            165
+            170
         );
 
     }
-
 
     else if(p===2){
 
+        /*
+           Platform section.
+           You can land on top.
+        */
+
         obstacle(
             "block",
-            x
+            x,
+            76
         );
 
         orb(
-            x+100,
+            x+105,
             155
-        );
-
-        obstacle(
-            "spike",
-            x+180
-        );
-
-    }
-
-
-    else if(p===3){
-
-        obstacle(
-            "spike",
-            x
-        );
-
-        orb(
-            x+100,
-            180
         );
 
         obstacle(
@@ -1278,36 +1170,52 @@ function pattern(){
 
     }
 
-
-    else if(p===4){
-
-        /*
-           Dash-friendly section
-        */
+    else if(p===3){
 
         obstacle(
-            "block",
+            "spike",
             x
         );
 
         obstacle(
             "block",
-            x+70
+            x+90,
+            76
         );
 
         orb(
-            x+150,
-            170
+            x+120,
+            150
         );
 
     }
 
-
-    else if(p===5){
+    else if(p===4){
 
         /*
-           Double-jump section
+           Two platforms.
         */
+
+        obstacle(
+            "block",
+            x,
+            76
+        );
+
+        obstacle(
+            "block",
+            x+95,
+            125
+        );
+
+        orb(
+            x+145,
+            200
+        );
+
+    }
+
+    else if(p===5){
 
         obstacle(
             "spike",
@@ -1319,23 +1227,22 @@ function pattern(){
             x+55
         );
 
-        obstacle(
-            "spike",
-            x+110
+        orb(
+            x+135,
+            185
         );
 
-        orb(
-            x+175,
-            190
+        obstacle(
+            "spike",
+            x+220
         );
 
     }
 
-
     else if(p===6){
 
         /*
-           Dash lane.
+           Fast platform run.
         */
 
         obstacle(
@@ -1346,29 +1253,23 @@ function pattern(){
 
         obstacle(
             "block",
-            x+65,
+            x+80,
             76
         );
 
         obstacle(
             "spike",
-            x+160,
-            76
+            x+180
         );
 
         orb(
             x+230,
-            170
+            175
         );
 
     }
 
-
     else{
-
-        /*
-           Mixed challenge.
-        */
 
         obstacle(
             "spike",
@@ -1377,38 +1278,40 @@ function pattern(){
 
         orb(
             x+100,
-            170
+            175
         );
 
         obstacle(
             "block",
-            x+180
+            x+180,
+            76
         );
 
         obstacle(
             "spike",
-            x+270
+            x+275
         );
 
     }
 
 
     /*
-       Never spawn the next
-       pattern too close.
+       Faster spawning,
+       but still enough room
+       to react.
     */
 
     spawnDistance=
-        Math.max(
-            370,
-            530-speed*15
-        );
+    Math.max(
+        300,
+        450-speed*10
+    );
 }
 
 
-/* =========================================
+/* =========================
    DASH TRAIL
-========================================= */
+========================= */
 
 function createDashTrail(){
 
@@ -1416,20 +1319,18 @@ function createDashTrail(){
 
         setTimeout(()=>{
 
-            if(!running)
-                return;
+            if(!running)return;
 
             const trail=
-                document.createElement("div");
+            document.createElement("div");
 
-            trail.className=
-                "dashTrail";
+            trail.className="dashTrail";
 
             trail.style.left=
-                playerX+"px";
+            playerX+"px";
 
             trail.style.bottom=
-                (76+y)+"px";
+            (76+y)+"px";
 
             world.appendChild(trail);
 
@@ -1443,31 +1344,31 @@ function createDashTrail(){
 }
 
 
-/* =========================================
+/* =========================
    PARTICLES
-========================================= */
+========================= */
 
 function particle(){
 
     const r=
-        player.getBoundingClientRect();
+    player.getBoundingClientRect();
 
     const p=
-        document.createElement("div");
+    document.createElement("div");
 
     p.className="particle";
 
     p.style.left=
-        r.left+
-        8+
-        Math.random()*25+
-        "px";
+    r.left+
+    8+
+    Math.random()*25+
+    "px";
 
     p.style.top=
-        r.top+
-        10+
-        Math.random()*25+
-        "px";
+    r.top+
+    10+
+    Math.random()*25+
+    "px";
 
     world.appendChild(p);
 
@@ -1491,7 +1392,7 @@ function updateParticles(dt){
     ){
 
         const p=
-            particles[i];
+        particles[i];
 
         p.x+=p.vx*dt;
         p.y+=p.vy*dt;
@@ -1499,13 +1400,13 @@ function updateParticles(dt){
         p.life-=.04*dt;
 
         p.el.style.left=
-            p.x+"px";
+        p.x+"px";
 
         p.el.style.top=
-            p.y+"px";
+        p.y+"px";
 
         p.el.style.opacity=
-            p.life;
+        p.life;
 
         if(p.life<=0){
 
@@ -1517,29 +1418,29 @@ function updateParticles(dt){
 }
 
 
-/* =========================================
+/* =========================
    SPEED LINES
-========================================= */
+========================= */
 
 function speedLine(){
 
     const l=
-        document.createElement("div");
+    document.createElement("div");
 
     l.className="speedline";
 
     l.style.width=
-        30+
-        Math.random()*130+
-        "px";
+    30+
+    Math.random()*130+
+    "px";
 
     l.style.left=
-        window.innerWidth+"px";
+    window.innerWidth+"px";
 
     l.style.top=
-        20+
-        Math.random()*65+
-        "%";
+    20+
+    Math.random()*65+
+    "%";
 
     world.appendChild(l);
 
@@ -1559,15 +1460,15 @@ function updateLines(dt){
     ){
 
         const l=
-            lines[i];
+        lines[i];
 
         l.x-=
-            speed*
-            2.2*
-            dt;
+        speed*
+        2.2*
+        dt;
 
         l.el.style.left=
-            l.x+"px";
+        l.x+"px";
 
         if(l.x<-200){
 
@@ -1579,44 +1480,158 @@ function updateLines(dt){
 }
 
 
-/* =========================================
-   COLLISION
-========================================= */
+/* =========================
+   RECT COLLISION
+========================= */
 
-function collision(a,b){
-
-    const A=
-        a.getBoundingClientRect();
-
-    const B=
-        b.getBoundingClientRect();
+function rectsOverlap(a,b){
 
     return !(
-        A.right-8<B.left+5||
-        A.left+8>B.right-5||
-        A.bottom-7<B.top+5||
-        A.top+7>B.bottom-5
+        a.right<=b.left ||
+        a.left>=b.right ||
+        a.bottom<=b.top ||
+        a.top>=b.bottom
     );
 }
 
 
-function collisions(){
+/* =========================
+   PLATFORM LANDING
+========================= */
+
+/*
+   This is the important part.
+
+   Blocks are ONE-WAY platforms.
+
+   Falling onto their top:
+       SAFE
+
+   Jumping upward through them:
+       SAFE
+
+   Hitting their side:
+       DEAD
+*/
+
+
+function checkPlatforms(){
+
+    const playerRect=
+    player.getBoundingClientRect();
 
     for(const o of obstacles){
 
+        if(o.type!=="block")
+            continue;
+
+        const r=
+        o.el.getBoundingClientRect();
+
+        const horizontal=
+        playerRect.right>r.left+6 &&
+        playerRect.left<r.right-6;
+
+        if(!horizontal)
+            continue;
+
+
+        /*
+           Player is falling.
+
+           Previous bottom was above
+           the platform top.
+
+           Current bottom has crossed
+           the platform top.
+
+           Therefore we landed.
+        */
+
+        const previousBottom=
+        playerRect.bottom-velocity;
+
         if(
-            collision(
-                player,
-                o.el
-            )
+            velocity<=0 &&
+            previousBottom<=r.top+8 &&
+            playerRect.bottom>=r.top
         ){
 
-            die();
+            const worldBottom=
+            world.getBoundingClientRect().bottom;
 
-            return;
+            /*
+               Convert platform screen
+               position into player's
+               bottom coordinate.
+            */
+
+            y=
+            worldBottom-
+            r.top-
+            45;
+
+            velocity=0;
+
+            /*
+               Landing restores the
+               second jump.
+            */
+
+            jumpsUsed=0;
+
+            createPopup(
+                "LAND!",
+                "#9c8cff"
+            );
+
+            return true;
         }
     }
 
+    return false;
+}
+
+
+/* =========================
+   SPIKE / SIDE COLLISION
+========================= */
+
+function checkHazards(){
+
+    const playerRect=
+    player.getBoundingClientRect();
+
+
+    for(const o of obstacles){
+
+        /*
+           Platforms are handled separately.
+        */
+
+        if(o.type==="block")
+            continue;
+
+        if(rectsOverlap(
+            playerRect,
+            o.el.getBoundingClientRect()
+        )){
+
+            die();
+            return;
+        }
+    }
+}
+
+
+/* =========================
+   ORBS
+========================= */
+
+function collectOrbs(){
+
+    const playerRect=
+    player.getBoundingClientRect();
 
     for(
         let i=orbs.length-1;
@@ -1624,55 +1639,48 @@ function collisions(){
         i--
     ){
 
+        const o=
+        orbs[i];
+
         if(
-            collision(
-                player,
-                orbs[i].el
+            rectsOverlap(
+                playerRect,
+                o.el.getBoundingClientRect()
             )
         ){
 
-            collectOrb(i);
+            score+=50;
+            combo++;
+
+            bestCombo=
+            Math.max(
+                bestCombo,
+                combo
+            );
+
+            createPopup(
+                "+50",
+                "#ffe45c"
+            );
+
+            beep(
+                850,
+                .1,
+                "sine",
+                .045
+            );
+
+            o.el.remove();
+
+            orbs.splice(i,1);
         }
     }
 }
 
 
-/* =========================================
-   ORBS
-========================================= */
-
-function collectOrb(i){
-
-    const o=
-        orbs[i];
-
-    score+=50;
-
-    combo++;
-
-    createPopup(
-        "+50",
-        "#ffe45c"
-    );
-
-    beep(
-        850,
-        .1,
-        "sine",
-        .045
-    );
-
-    o.el.remove();
-
-    orbs.splice(i,1);
-
-    shake=3;
-}
-
-
-/* =========================================
+/* =========================
    POPUP
-========================================= */
+========================= */
 
 function createPopup(
     text,
@@ -1680,10 +1688,10 @@ function createPopup(
 ){
 
     const r=
-        player.getBoundingClientRect();
+    player.getBoundingClientRect();
 
     const p=
-        document.createElement("div");
+    document.createElement("div");
 
     p.className="popup";
 
@@ -1692,10 +1700,10 @@ function createPopup(
     p.style.color=color;
 
     p.style.left=
-        r.left+"px";
+    r.left+"px";
 
     p.style.top=
-        r.top+"px";
+    r.top+"px";
 
     game.appendChild(p);
 
@@ -1706,14 +1714,13 @@ function createPopup(
 }
 
 
-/* =========================================
+/* =========================
    DEATH
-========================================= */
+========================= */
 
 function die(){
 
-    if(dead)
-        return;
+    if(dead)return;
 
     dead=true;
     running=false;
@@ -1726,7 +1733,7 @@ function die(){
     setTimeout(()=>{
 
         flash.style.transition=
-            "opacity .35s";
+        "opacity .35s";
 
         flash.style.opacity="0";
 
@@ -1752,12 +1759,12 @@ function die(){
 
 
     finalScore.textContent=
-        "SCORE  "+score;
+    "SCORE  "+score;
 
     bestScore.textContent=
-        "BEST  "+best+
-        "   •   MAX COMBO ×"+
-        bestCombo;
+    "BEST  "+best+
+    "   •   MAX COMBO ×"+
+    bestCombo;
 
 
     setTimeout(()=>{
@@ -1767,15 +1774,15 @@ function die(){
         startScreen.style.display="none";
 
         gameOverScreen.style.display=
-            "block";
+        "block";
 
     },450);
 }
 
 
-/* =========================================
+/* =========================
    CLEANUP
-========================================= */
+========================= */
 
 function clearObjects(){
 
@@ -1802,25 +1809,20 @@ function clearObjects(){
 }
 
 
-/* =========================================
+/* =========================
    GAME LOOP
-========================================= */
+========================= */
 
 let lastTime=0;
 
 function loop(time){
 
-    if(!running)
-        return;
+    if(!running)return;
 
     let dt=
-        (time-lastTime)/16.67;
+    (time-lastTime)/16.67;
 
-    dt=
-        Math.min(
-            dt,
-            2
-        );
+    dt=Math.min(dt,2);
 
     lastTime=time;
 
@@ -1830,35 +1832,43 @@ function loop(time){
 }
 
 
-/* =========================================
+/* =========================
    UPDATE
-========================================= */
+========================= */
 
 function update(dt){
 
-    /* SPEED */
+    /*
+       FAST ACCELERATION
 
-    speed+=.0018*dt;
+       8.0 → 16.0 max
+
+       This gives the game
+       a much more aggressive
+       arcade feeling.
+    */
+
+    speed+=.0032*dt;
 
     speed=
-        Math.min(
-            speed,
-            13.5
-        );
+    Math.min(
+        speed,
+        maxSpeed
+    );
 
-
-    /* DISTANCE */
 
     distance+=speed*dt;
 
     score=
-        Math.floor(distance/10)+
-        combo*2;
+    Math.floor(distance/10)+
+    combo*2;
 
 
-    /* =====================================
-       PLAYER VERTICAL PHYSICS
-    ===================================== */
+    /* =====================
+       PLAYER PHYSICS
+    ===================== */
+
+    previousY=y;
 
     velocity-=gravity*dt;
 
@@ -1866,7 +1876,7 @@ function update(dt){
 
 
     /*
-       LANDING
+       Ground collision
     */
 
     if(y<=0){
@@ -1874,17 +1884,12 @@ function update(dt){
         y=0;
         velocity=0;
 
-        /*
-           Reset double jump
-           when touching ground.
-        */
-
         jumpsUsed=0;
     }
 
 
     player.style.bottom=
-        (76+y)+"px";
+    (76+y)+"px";
 
 
     if(y>2){
@@ -1894,13 +1899,13 @@ function update(dt){
     }else{
 
         rotation=
-            Math.round(rotation/90)*90;
+        Math.round(rotation/90)*90;
     }
 
 
-    /* =====================================
-       DASH PHYSICS
-    ===================================== */
+    /* =====================
+       DASH
+    ===================== */
 
     if(dashCooldown>0){
 
@@ -1913,40 +1918,23 @@ function update(dt){
 
     if(dashTimer>0){
 
-        /*
-           Move horizontally.
-
-           Dash works both
-           directions.
-        */
-
         playerX+=
-            dashVelocity*dt;
+        dashVelocity*dt;
 
         dashTimer-=dt;
 
         dashVelocity*=.88;
 
 
-        /*
-           Keep player inside
-           reasonable screen bounds.
-        */
-
         playerX=
-            Math.max(
-                25,
-                Math.min(
-                    window.innerWidth-70,
-                    playerX
-                )
-            );
+        Math.max(
+            20,
+            Math.min(
+                window.innerWidth-70,
+                playerX
+            )
+        );
 
-
-        /*
-           Reset dash after
-           burst is finished.
-        */
 
         if(dashTimer<=0){
 
@@ -1958,74 +1946,63 @@ function update(dt){
     }
 
 
-    /*
-       Normal player position.
-    */
-
     player.style.left=
-        playerX+"px";
+    playerX+"px";
 
     player.style.transform=
-        `rotate(${rotation}deg)`;
+    `rotate(${rotation}deg)`;
 
 
-    /* =====================================
+    /* =====================
        HUD
-    ===================================== */
+    ===================== */
 
     scoreEl.textContent=
-        String(score)
-            .padStart(6,"0");
-
+    String(score).padStart(6,"0");
 
     comboEl.textContent=
-        combo>=2
-            ? `COMBO ×${combo}`
-            : "";
+    combo>=2
+    ?`COMBO ×${combo}`
+    :"";
 
 
     progress.style.width=
-        Math.min(
-            100,
-            (distance%1000)/10
-        )+"%";
+    Math.min(
+        100,
+        (distance%1000)/10
+    )+"%";
 
 
-    let jumpStatus;
-
-    if(jumpsUsed===0)
-        jumpStatus=
-            "DOUBLE JUMP: READY";
-
-    else if(jumpsUsed===1)
-        jumpStatus=
-            "DOUBLE JUMP: 1 LEFT";
-
-    else
-        jumpStatus=
-            "DOUBLE JUMP: USED";
+    const jumpText=
+    jumpsUsed===0
+    ?"DOUBLE JUMP: READY"
+    :
+    jumpsUsed===1
+    ?"DOUBLE JUMP: 1 LEFT"
+    :
+    "DOUBLE JUMP: USED";
 
 
-    let dashStatus=
-        dashCooldown<=0
-            ? "DASH: READY"
-            : "DASH: "+
-              (dashCooldown/55)
-              .toFixed(1)+"s";
+    const dashText=
+    dashCooldown<=0
+    ?"DASH: READY"
+    :
+    "DASH: "+
+    (dashCooldown/45).toFixed(1)+"s";
 
 
     status.textContent=
-        jumpStatus+
-        "  •  "+
-        dashStatus;
+    jumpText+
+    " • "+
+    dashText;
 
 
-    /* =====================================
-       SPAWNING
-    ===================================== */
+    /* =====================
+       SPAWN
+    ===================== */
 
     spawnDistance-=
-        speed*dt;
+    speed*dt;
 
     if(spawnDistance<=0){
 
@@ -2033,9 +2010,9 @@ function update(dt){
     }
 
 
-    /* =====================================
-       MOVE OBSTACLES
-    ===================================== */
+    /* =====================
+       MOVE OBJECTS
+    ===================== */
 
     for(
         let i=obstacles.length-1;
@@ -2044,16 +2021,15 @@ function update(dt){
     ){
 
         const o=
-            obstacles[i];
+        obstacles[i];
 
         o.x-=
-            speed*dt;
+        speed*dt;
 
         o.el.style.left=
-            o.x+"px";
+        o.x+"px";
 
-
-        if(o.x<-180){
+        if(o.x<-200){
 
             o.el.remove();
 
@@ -2062,10 +2038,6 @@ function update(dt){
     }
 
 
-    /* =====================================
-       MOVE ORBS
-    ===================================== */
-
     for(
         let i=orbs.length-1;
         i>=0;
@@ -2073,14 +2045,13 @@ function update(dt){
     ){
 
         const o=
-            orbs[i];
+        orbs[i];
 
         o.x-=
-            speed*dt;
+        speed*dt;
 
         o.el.style.left=
-            o.x+"px";
-
+        o.x+"px";
 
         if(o.x<-100){
 
@@ -2091,35 +2062,33 @@ function update(dt){
     }
 
 
-    /* =====================================
+    /* =====================
        EFFECTS
-    ===================================== */
+    ===================== */
 
-    if(Math.random()<.65)
+    if(Math.random()<.8)
         particle();
 
-    if(Math.random()<.12)
+    if(Math.random()<.18)
         speedLine();
 
-
     updateParticles(dt);
-
     updateLines(dt);
 
 
-    /* =====================================
+    /* =====================
        SCREEN SHAKE
-    ===================================== */
+    ===================== */
 
     if(shake>0){
 
         shake-=.3*dt;
 
         game.style.transform=
-            `translate(
-                ${(Math.random()-.5)*shake}px,
-                ${(Math.random()-.5)*shake}px
-            )`;
+        `translate(
+            ${(Math.random()-.5)*shake}px,
+            ${(Math.random()-.5)*shake}px
+        )`;
 
     }else{
 
@@ -2127,29 +2096,32 @@ function update(dt){
     }
 
 
-    /* =====================================
+    /* =====================
        COLLISION
-    ===================================== */
+    ===================== */
 
-    collisions();
+    checkPlatforms();
+
+    checkHazards();
+
+    collectOrbs();
 }
 
 
-/* =========================================
+/* =========================
    RESIZE
-========================================= */
+========================= */
 
 window.addEventListener(
-    "resize",
-    ()=>{
+"resize",
+()=>{
 
-        playerX=
-            Math.min(
-                playerX,
-                window.innerWidth-70
-            );
-    }
-);
+    playerX=
+    Math.min(
+        playerX,
+        window.innerWidth-70
+    );
+});
 
 </script>
 
