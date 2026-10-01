@@ -2,367 +2,559 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geometry Dash - Neon Run</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NEON DASH</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    user-select: none;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    user-select:none;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #070714;
-    font-family: Arial, Helvetica, sans-serif;
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#05050d;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-#game {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
     background:
-        radial-gradient(circle at 50% 35%, #25235a 0%, #10102c 35%, #060611 100%);
+        radial-gradient(circle at 50% 45%,
+        #292660 0%,
+        #10102b 38%,
+        #05050d 100%);
+    transition:transform .05s;
 }
 
-/* Background grid */
-#game::before {
-    content: "";
-    position: absolute;
-    inset: 0;
+/* BACKGROUND */
+
+#sky{
+    position:absolute;
+    inset:0;
+}
+
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:white;
+    box-shadow:0 0 8px white;
+    opacity:.5;
+}
+
+#grid{
+    position:absolute;
+    width:140%;
+    height:70%;
+    left:-20%;
+    bottom:-20%;
     background-image:
-        linear-gradient(rgba(100, 100, 255, .08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(100, 100, 255, .08) 1px, transparent 1px);
-    background-size: 50px 50px;
-    transform: perspective(500px) rotateX(55deg) scale(1.5);
-    transform-origin: center bottom;
-    opacity: .7;
+        linear-gradient(rgba(0,234,255,.12) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.12) 1px,transparent 1px);
+    background-size:55px 55px;
+    transform:
+        perspective(450px)
+        rotateX(58deg);
+    transform-origin:center bottom;
 }
 
-/* Background glow */
-.glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(70px);
-    opacity: .25;
-    pointer-events: none;
+.glow{
+    position:absolute;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    filter:blur(100px);
+    opacity:.18;
 }
 
-.glow.one {
-    width: 350px;
-    height: 350px;
-    background: #6c42ff;
-    left: 5%;
-    top: 5%;
+.g1{
+    background:#744cff;
+    left:-130px;
+    top:-150px;
 }
 
-.glow.two {
-    width: 300px;
-    height: 300px;
-    background: #00eaff;
-    right: 5%;
-    bottom: 5%;
+.g2{
+    background:#00eaff;
+    right:-150px;
+    bottom:-100px;
 }
 
 /* HUD */
-#hud {
-    position: absolute;
-    top: 20px;
-    left: 0;
-    width: 100%;
-    z-index: 20;
-    text-align: center;
-    color: white;
-    pointer-events: none;
+
+#hud{
+    position:absolute;
+    z-index:50;
+    top:17px;
+    width:100%;
+    text-align:center;
+    color:white;
+    pointer-events:none;
 }
 
-#title {
-    font-size: clamp(22px, 4vw, 42px);
-    font-weight: 900;
-    letter-spacing: 5px;
+.logo{
+    font-size:clamp(25px,5vw,46px);
+    font-weight:1000;
+    letter-spacing:7px;
     text-shadow:
-        0 0 10px #00eaff,
-        0 0 25px #6c42ff;
+        0 0 8px #00eaff,
+        0 0 25px #744cff,
+        0 0 50px #744cff;
 }
 
-#score {
-    margin-top: 8px;
-    font-size: 17px;
-    font-weight: bold;
-    letter-spacing: 2px;
+#score{
+    margin-top:4px;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:3px;
 }
 
-#progressOuter {
-    width: min(600px, 80vw);
-    height: 7px;
-    margin: 12px auto 0;
-    background: rgba(255,255,255,.15);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,234,255,.2);
+#combo{
+    height:25px;
+    margin-top:3px;
+    font-size:16px;
+    font-weight:900;
+    color:#ffe45c;
+    text-shadow:0 0 10px #ffb700;
 }
 
-#progress {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #00eaff, #a64cff);
-    box-shadow: 0 0 15px #00eaff;
+#bar{
+    width:min(600px,82vw);
+    height:7px;
+    margin:4px auto;
+    background:rgba(255,255,255,.12);
+    border-radius:10px;
+    overflow:hidden;
 }
 
-/* World */
-#world {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 58%;
-}
-
-/* Ground */
-#ground {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 80px;
+#progress{
+    height:100%;
+    width:0;
     background:
-        linear-gradient(#1a1a42, #0c0c25);
-    border-top: 4px solid #00eaff;
+        linear-gradient(
+            90deg,
+            #00eaff,
+            #744cff,
+            #ff38a8
+        );
+    box-shadow:0 0 15px #00eaff;
+}
+
+#status{
+    margin-top:5px;
+    font-size:11px;
+    letter-spacing:1.5px;
+    opacity:.7;
+}
+
+/* WORLD */
+
+#world{
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:58%;
+}
+
+#ground{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:76px;
+
+    border-top:4px solid #00eaff;
+
+    background:
+        linear-gradient(
+            #171743,
+            #080817
+        );
+
     box-shadow:
-        0 -5px 20px rgba(0,234,255,.35),
-        inset 0 10px 25px rgba(0,0,0,.5);
+        0 -5px 25px rgba(0,234,255,.35),
+        inset 0 15px 30px rgba(0,0,0,.5);
 }
 
-#ground::after {
-    content: "";
-    position: absolute;
-    inset: 12px 0 0;
+#ground:after{
+    content:"";
+    position:absolute;
+    inset:15px 0 0;
+
     background-image:
-        linear-gradient(90deg, transparent 0 38px, rgba(0,234,255,.12) 39px 40px);
-    background-size: 40px 100%;
+        linear-gradient(
+            90deg,
+            transparent 0 38px,
+            rgba(0,234,255,.1) 39px 40px
+        );
+
+    background-size:40px 100%;
 }
 
-/* Player */
-#player {
-    position: absolute;
-    width: 46px;
-    height: 46px;
-    left: 15%;
-    bottom: 80px;
-    z-index: 10;
+/* PLAYER */
 
-    background: linear-gradient(135deg, #ffffff, #54f7ff 45%, #6d3cff);
-    border: 3px solid white;
+#player{
+    position:absolute;
+    width:45px;
+    height:45px;
+    left:17%;
+    bottom:76px;
+    z-index:20;
+
+    background:
+        linear-gradient(
+            135deg,
+            white 0%,
+            #69f8ff 35%,
+            #7346ff 100%
+        );
+
+    border:3px solid white;
 
     box-shadow:
         0 0 10px #00eaff,
         0 0 25px #00eaff,
-        0 0 50px rgba(100,50,255,.8);
+        0 0 50px rgba(110,60,255,.8);
 
-    transform-origin: center;
+    transform-origin:center;
 }
 
-#player::before,
-#player::after {
-    content: "";
-    position: absolute;
-    background: #11132d;
+#player:before,
+#player:after{
+    content:"";
+    position:absolute;
+    width:8px;
+    height:8px;
+    top:8px;
+    background:#10102c;
 }
 
-#player::before {
-    width: 8px;
-    height: 8px;
-    left: 8px;
-    top: 8px;
+#player:before{
+    left:7px;
 }
 
-#player::after {
-    width: 8px;
-    height: 8px;
-    right: 8px;
-    top: 8px;
+#player:after{
+    right:7px;
 }
 
-/* Obstacles */
-.obstacle {
-    position: absolute;
-    z-index: 5;
-}
+/* DASH TRAIL */
 
-/* Spike */
-.spike {
-    width: 0;
-    height: 0;
-    border-left: 24px solid transparent;
-    border-right: 24px solid transparent;
-    border-bottom: 52px solid #ff315f;
+.dashTrail{
+    position:absolute;
+    width:35px;
+    height:35px;
+    z-index:15;
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.8),
+            rgba(116,76,255,.1)
+        );
+
+    border-radius:6px;
 
     filter:
-        drop-shadow(0 0 5px #ff315f)
-        drop-shadow(0 0 15px rgba(255,49,95,.7));
+        blur(2px)
+        drop-shadow(0 0 10px #00eaff);
+
+    animation:trailFade .35s forwards;
 }
 
-/* Double spike */
-.doubleSpike {
-    width: 48px;
-    height: 52px;
+@keyframes trailFade{
+    from{
+        opacity:.8;
+        transform:scale(1);
+    }
+
+    to{
+        opacity:0;
+        transform:scale(.3);
+    }
+}
+
+/* OBSTACLES */
+
+.obstacle{
+    position:absolute;
+    z-index:10;
+}
+
+.spike{
+    width:0;
+    height:0;
+
+    border-left:24px solid transparent;
+    border-right:24px solid transparent;
+    border-bottom:52px solid #ff3867;
+
+    filter:
+        drop-shadow(0 0 7px #ff3867)
+        drop-shadow(0 0 18px rgba(255,56,103,.65));
+}
+
+.block{
+    width:55px;
+    height:55px;
+
+    border:3px solid #8975ff;
+
     background:
-        linear-gradient(135deg, transparent 48%, #ff315f 49% 51%, transparent 52%),
-        linear-gradient(45deg, transparent 48%, #ff315f 49% 51%, transparent 52%);
-    filter: drop-shadow(0 0 8px #ff315f);
-}
+        linear-gradient(
+            135deg,
+            #4334a5,
+            #171744
+        );
 
-/* Block */
-.block {
-    width: 55px;
-    height: 55px;
-    background: linear-gradient(135deg, #4036a3, #1b1a55);
-    border: 3px solid #8c7dff;
     box-shadow:
-        0 0 10px #6655ff,
-        inset 0 0 15px rgba(150,100,255,.3);
+        0 0 12px #6552ff,
+        inset 0 0 15px rgba(150,100,255,.25);
 }
 
-.block::after {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border: 2px solid rgba(255,255,255,.2);
+.block:after{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border:2px solid rgba(255,255,255,.2);
 }
 
-/* Jump pad */
-.pad {
-    width: 55px;
-    height: 12px;
-    border-radius: 5px 5px 0 0;
-    background: #ffed4a;
-    box-shadow: 0 0 15px #ffed4a;
-}
+/* ORB */
 
-/* Portal */
-.portal {
-    width: 55px;
-    height: 140px;
-    border: 7px solid #00eaff;
-    border-radius: 50%;
+.orb{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+
+    background:#ffe45c;
+
+    border:3px solid white;
+
     box-shadow:
-        0 0 10px #00eaff,
-        0 0 30px #00eaff,
-        inset 0 0 20px #00eaff;
+        0 0 10px #ffe45c,
+        0 0 25px #ffb700;
 }
 
-/* Particles */
-.particle {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #00eaff;
-    pointer-events: none;
-    z-index: 2;
-    box-shadow: 0 0 8px #00eaff;
+/* SPEED LINES */
+
+.speedline{
+    position:absolute;
+    height:2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.55)
+        );
+
+    z-index:1;
+    pointer-events:none;
 }
 
-/* Overlay */
-#overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(4,4,15,.72);
-    backdrop-filter: blur(8px);
-}
+/* PARTICLES */
 
-.panel {
-    width: min(500px, 88vw);
-    padding: 40px 30px;
-    text-align: center;
-    border: 2px solid rgba(0,234,255,.5);
-    border-radius: 20px;
-    background: rgba(12,12,40,.9);
+.particle{
+    position:absolute;
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+
+    background:#00eaff;
+
     box-shadow:
-        0 0 30px rgba(0,234,255,.2),
-        inset 0 0 30px rgba(100,50,255,.1);
-    color: white;
+        0 0 9px #00eaff;
+
+    pointer-events:none;
 }
 
-.panel h1 {
-    font-size: clamp(32px, 8vw, 60px);
-    margin-bottom: 12px;
-    letter-spacing: 4px;
+/* POPUPS */
+
+.popup{
+    position:absolute;
+    z-index:60;
+
+    color:white;
+
+    font-weight:1000;
+    font-size:17px;
+
+    pointer-events:none;
+
     text-shadow:
-        0 0 10px #00eaff,
-        0 0 30px #774cff;
+        0 0 10px currentColor;
+
+    animation:
+        pop .6s forwards;
 }
 
-.panel p {
-    color: #bfc7ff;
-    margin: 8px 0;
-    line-height: 1.5;
+@keyframes pop{
+
+    0%{
+        transform:
+            translateY(0)
+            scale(.7);
+
+        opacity:0;
+    }
+
+    25%{
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translateY(-45px)
+            scale(1.15);
+
+        opacity:0;
+    }
 }
 
-button {
-    margin-top: 25px;
-    padding: 15px 38px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    cursor: pointer;
-    background: linear-gradient(90deg, #00aeea, #774cff);
+/* OVERLAY */
+
+#overlay{
+    position:absolute;
+    inset:0;
+    z-index:100;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        rgba(3,3,13,.72);
+
+    backdrop-filter:blur(10px);
+}
+
+.panel{
+    width:min(520px,90vw);
+
+    padding:40px 30px;
+
+    text-align:center;
+    color:white;
+
+    border:
+        1px solid rgba(0,234,255,.5);
+
+    border-radius:22px;
+
+    background:
+        rgba(10,10,35,.93);
+
     box-shadow:
-        0 0 15px rgba(0,234,255,.5),
-        0 0 30px rgba(119,76,255,.3);
-    transition: .2s;
+        0 0 40px rgba(0,234,255,.18),
+        inset 0 0 40px rgba(100,60,255,.08);
 }
 
-button:hover {
-    transform: scale(1.06);
+.panel h1{
+    font-size:
+        clamp(40px,10vw,70px);
+
+    font-weight:1000;
+    letter-spacing:5px;
+
+    text-shadow:
+        0 0 12px #00eaff,
+        0 0 35px #744cff;
+}
+
+.panel p{
+    margin:9px 0;
+    color:#c7ccff;
+    line-height:1.5;
+}
+
+.controls{
+    margin-top:18px;
+    padding:13px;
+    border-radius:12px;
+    background:rgba(255,255,255,.05);
+    font-size:13px;
+    color:#aeb8e8;
+    line-height:1.8;
+}
+
+.key{
+    display:inline-block;
+    padding:2px 7px;
+    border-radius:5px;
+    background:#242450;
+    color:white;
+    font-weight:bold;
+}
+
+.bigScore{
+    font-size:30px;
+    font-weight:1000;
+    margin:18px 0;
+}
+
+button{
+    margin-top:20px;
+
+    border:none;
+    border-radius:12px;
+
+    padding:15px 42px;
+
+    color:white;
+
+    font-size:18px;
+    font-weight:1000;
+    letter-spacing:2px;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00bce8,
+            #734cff
+        );
+
     box-shadow:
-        0 0 25px rgba(0,234,255,.8),
-        0 0 45px rgba(119,76,255,.5);
+        0 0 20px rgba(0,234,255,.45),
+        0 0 35px rgba(115,76,255,.3);
+
+    transition:.18s;
 }
 
-#gameOverText {
-    display: none;
+button:hover{
+    transform:scale(1.07);
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-    #world {
-        height: 52%;
-    }
+#gameOver{
+    display:none;
+}
 
-    #ground {
-        height: 65px;
-    }
+#flash{
+    position:absolute;
+    inset:0;
+    z-index:80;
 
-    #player {
-        width: 40px;
-        height: 40px;
-        left: 20%;
-    }
+    background:white;
+    opacity:0;
 
-    .spike {
-        border-left-width: 20px;
-        border-right-width: 20px;
-        border-bottom-width: 45px;
-    }
+    pointer-events:none;
 }
 </style>
 </head>
@@ -371,162 +563,595 @@ button:hover {
 
 <div id="game">
 
-    <div class="glow one"></div>
-    <div class="glow two"></div>
+    <div id="sky"></div>
+    <div id="grid"></div>
+
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
 
     <div id="hud">
-        <div id="title">NEON DASH</div>
-        <div id="score">0</div>
 
-        <div id="progressOuter">
+        <div class="logo">
+            NEON DASH
+        </div>
+
+        <div id="score">
+            000000
+        </div>
+
+        <div id="combo"></div>
+
+        <div id="bar">
             <div id="progress"></div>
         </div>
+
+        <div id="status">
+            DOUBLE JUMP: READY
+            &nbsp; • &nbsp;
+            DASH: READY
+        </div>
+
     </div>
 
     <div id="world">
+
         <div id="player"></div>
+
         <div id="ground"></div>
+
     </div>
 
+    <div id="flash"></div>
+
     <div id="overlay">
+
         <div class="panel">
 
-            <div id="startText">
+            <div id="start">
+
                 <h1>NEON DASH</h1>
-                <p>Geometry Dash inspired endless runner</p>
-                <p>SPACE / ↑ / CLICK / TAP to jump</p>
-                <button onclick="startGame()">PLAY</button>
+
+                <p>
+                    RUN. JUMP. DASH. SURVIVE.
+                </p>
+
+                <div class="controls">
+
+                    <span class="key">SPACE</span>
+                    /
+                    <span class="key">↑</span>
+                    Jump
+
+                    <br>
+
+                    Press twice in air =
+                    <b>DOUBLE JUMP</b>
+
+                    <br>
+
+                    <span class="key">SHIFT + ←</span>
+                    Dash Left
+
+                    <br>
+
+                    <span class="key">SHIFT + →</span>
+                    Dash Right
+
+                    <br>
+
+                    <span class="key">A</span>
+                    /
+                    <span class="key">D</span>
+                    Dash
+
+                </div>
+
+                <button onclick="startGame()">
+                    START RUN
+                </button>
+
             </div>
 
-            <div id="gameOverText">
+            <div id="gameOver">
+
                 <h1>CRASH!</h1>
-                <p id="finalScore">Score: 0</p>
-                <p>Press R or click below to try again.</p>
-                <button onclick="restartGame()">RETRY</button>
+
+                <div
+                    class="bigScore"
+                    id="finalScore"
+                >
+                    0
+                </div>
+
+                <p id="bestScore"></p>
+
+                <button onclick="restart()">
+                    RUN AGAIN
+                </button>
+
             </div>
 
         </div>
+
     </div>
 
 </div>
 
 <script>
-const game = document.getElementById("game");
-const world = document.getElementById("world");
-const player = document.getElementById("player");
-const scoreEl = document.getElementById("score");
-const progressEl = document.getElementById("progress");
-const overlay = document.getElementById("overlay");
-const startText = document.getElementById("startText");
-const gameOverText = document.getElementById("gameOverText");
-const finalScore = document.getElementById("finalScore");
 
-let running = false;
-let gameOver = false;
+/* =========================================
+   AUDIO
+========================================= */
 
-let playerY = 0;
-let velocity = 0;
-let rotation = 0;
+let audioCtx=null;
 
-const gravity = 0.85;
-const jumpPower = 15.5;
+function audio(){
 
-let speed = 7;
-let score = 0;
-let distance = 0;
+    if(!audioCtx){
 
-let obstacles = [];
-let particles = [];
-
-let spawnTimer = 0;
-let lastTime = 0;
-
-let best = Number(localStorage.getItem("neonDashBest") || 0);
-
-/* -------------------------
-   START
-------------------------- */
-
-function startGame() {
-    running = true;
-    gameOver = false;
-
-    overlay.style.display = "none";
-
-    score = 0;
-    distance = 0;
-    speed = 7;
-
-    playerY = 0;
-    velocity = 0;
-    rotation = 0;
-
-    clearObstacles();
-
-    spawnTimer = 50;
-
-    requestAnimationFrame(gameLoop);
+        audioCtx=
+            new(
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+    }
 }
 
-/* -------------------------
-   RESTART
-------------------------- */
+function beep(
+    frequency,
+    duration,
+    type="square",
+    volume=.04
+){
 
-function restartGame() {
-    startText.style.display = "block";
-    gameOverText.style.display = "none";
+    if(!audioCtx)return;
+
+    const osc=
+        audioCtx.createOscillator();
+
+    const gain=
+        audioCtx.createGain();
+
+    osc.type=type;
+    osc.frequency.value=frequency;
+
+    gain.gain.setValueAtTime(
+        volume,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audioCtx.currentTime+duration
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+
+    osc.stop(
+        audioCtx.currentTime+duration
+    );
+}
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const game=
+    document.getElementById("game");
+
+const world=
+    document.getElementById("world");
+
+const player=
+    document.getElementById("player");
+
+const scoreEl=
+    document.getElementById("score");
+
+const comboEl=
+    document.getElementById("combo");
+
+const progress=
+    document.getElementById("progress");
+
+const status=
+    document.getElementById("status");
+
+const overlay=
+    document.getElementById("overlay");
+
+const startScreen=
+    document.getElementById("start");
+
+const gameOverScreen=
+    document.getElementById("gameOver");
+
+const finalScore=
+    document.getElementById("finalScore");
+
+const bestScore=
+    document.getElementById("bestScore");
+
+const flash=
+    document.getElementById("flash");
+
+
+/* =========================================
+   GAME STATE
+========================================= */
+
+let running=false;
+let dead=false;
+
+let y=0;
+let velocity=0;
+let rotation=0;
+
+const gravity=.82;
+const jumpPower=15.3;
+
+
+/* DOUBLE JUMP */
+
+let jumpsUsed=0;
+const maxJumps=2;
+
+
+/* HORIZONTAL DASH */
+
+let playerX=0;
+
+let dashVelocity=0;
+
+let dashCooldown=0;
+
+const dashPower=18;
+const dashDuration=13;
+
+let dashTimer=0;
+
+let dashDirection=0;
+
+
+/* WORLD */
+
+let speed=6.3;
+let distance=0;
+let score=0;
+
+let combo=0;
+let bestCombo=0;
+
+let spawnDistance=350;
+
+
+/* OBJECTS */
+
+let obstacles=[];
+let orbs=[];
+let particles=[];
+let lines=[];
+
+
+/* EFFECTS */
+
+let shake=0;
+
+let best=
+    Number(
+        localStorage.getItem(
+            "neonDashBest"
+        )||0
+    );
+
+
+/* =========================================
+   BACKGROUND STARS
+========================================= */
+
+for(let i=0;i<70;i++){
+
+    const s=
+        document.createElement("div");
+
+    s.className="star";
+
+    s.style.left=
+        Math.random()*100+"%";
+
+    s.style.top=
+        Math.random()*75+"%";
+
+    s.style.opacity=
+        .15+
+        Math.random()*.55;
+
+    document
+        .getElementById("sky")
+        .appendChild(s);
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+function startGame(){
+
+    audio();
+
+    running=true;
+    dead=false;
+
+    overlay.style.display="none";
+
+    y=0;
+    velocity=0;
+    rotation=0;
+
+    jumpsUsed=0;
+
+    playerX=
+        window.innerWidth*.17;
+
+    dashVelocity=0;
+    dashCooldown=0;
+    dashTimer=0;
+    dashDirection=0;
+
+    speed=6.3;
+    distance=0;
+    score=0;
+
+    combo=0;
+    bestCombo=0;
+
+    spawnDistance=350;
+
+    clearObjects();
+
+    lastTime=
+        performance.now();
+
+    requestAnimationFrame(loop);
+}
+
+
+/* =========================================
+   RESTART
+========================================= */
+
+function restart(){
+
+    startScreen.style.display="block";
+    gameOverScreen.style.display="none";
+
     startGame();
 }
 
-/* -------------------------
+
+/* =========================================
    JUMP
-------------------------- */
+========================================= */
 
-function jump() {
+function jump(){
 
-    if (!running || gameOver) return;
+    if(!running||dead)
+        return;
 
-    if (playerY <= 2) {
-        velocity = jumpPower;
+
+    /*
+       First jump:
+       available on ground.
+
+       Second jump:
+       available while airborne.
+    */
+
+    if(jumpsUsed<maxJumps){
+
+        velocity=jumpPower;
+
+        jumpsUsed++;
+
+        combo++;
+
+        if(combo>bestCombo)
+            bestCombo=combo;
+
+        if(jumpsUsed===2){
+
+            createPopup(
+                "DOUBLE JUMP!",
+                "#ff55dd"
+            );
+
+            beep(
+                650,
+                .09,
+                "triangle",
+                .045
+            );
+
+        }else{
+
+            createPopup(
+                "JUMP!",
+                "#00eaff"
+            );
+
+            beep(
+                420,
+                .07,
+                "square",
+                .035
+            );
+        }
+
+        shake=2;
     }
 }
 
-document.addEventListener("keydown", e => {
 
-    if (
-        e.code === "Space" ||
-        e.code === "ArrowUp" ||
-        e.code === "KeyW"
-    ) {
-        e.preventDefault();
-        jump();
+/* =========================================
+   DASH
+========================================= */
+
+function dash(direction){
+
+    if(!running||dead)
+        return;
+
+    if(dashCooldown>0)
+        return;
+
+
+    dashDirection=direction;
+
+    dashVelocity=
+        direction*dashPower;
+
+    dashTimer=dashDuration;
+
+    dashCooldown=55;
+
+    createDashTrail();
+
+    createPopup(
+        direction>0
+            ? "DASH →"
+            : "← DASH",
+        "#00eaff"
+    );
+
+    beep(
+        direction>0
+            ? 900
+            : 700,
+        .12,
+        "sawtooth",
+        .055
+    );
+
+    shake=5;
+}
+
+
+/* =========================================
+   KEYBOARD
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(
+            e.code==="Space"||
+            e.code==="ArrowUp"||
+            e.code==="KeyW"
+        ){
+
+            e.preventDefault();
+
+            jump();
+
+            return;
+        }
+
+
+        /*
+           DASH CONTROLS
+
+           SHIFT + RIGHT
+           SHIFT + LEFT
+
+           A / D can also dash.
+        */
+
+        if(
+            e.code==="ArrowRight"||
+            e.code==="KeyD"
+        ){
+
+            if(e.shiftKey||e.code==="KeyD")
+                dash(1);
+
+            return;
+        }
+
+
+        if(
+            e.code==="ArrowLeft"||
+            e.code==="KeyA"
+        ){
+
+            if(e.shiftKey||e.code==="KeyA")
+                dash(-1);
+
+            return;
+        }
+
+
+        if(e.code==="KeyR"&&dead){
+
+            restart();
+        }
+
     }
+);
 
-    if (e.code === "KeyR") {
-        if (gameOver) restartGame();
+
+/* =========================================
+   MOUSE / TOUCH
+========================================= */
+
+document.addEventListener(
+    "mousedown",
+    e=>{
+
+        if(e.target.tagName!=="BUTTON")
+            jump();
+
     }
-});
+);
 
-document.addEventListener("mousedown", e => {
-    if (e.target.tagName !== "BUTTON") jump();
-});
+document.addEventListener(
+    "touchstart",
+    e=>{
 
-document.addEventListener("touchstart", e => {
-    if (e.target.tagName !== "BUTTON") jump();
-}, {passive: true});
+        if(e.target.tagName!=="BUTTON")
+            jump();
 
-/* -------------------------
+    },
+    {passive:true}
+);
+
+
+/* =========================================
    OBSTACLES
-------------------------- */
+========================================= */
 
-function createObstacle(type, x, bottom = 80) {
+function obstacle(
+    type,
+    x,
+    bottom=76
+){
 
-    const el = document.createElement("div");
+    const el=
+        document.createElement("div");
 
-    el.classList.add("obstacle", type);
+    el.className=
+        "obstacle "+type;
 
-    el.style.left = x + "px";
-    el.style.bottom = bottom + "px";
+    el.style.left=
+        x+"px";
+
+    el.style.bottom=
+        bottom+"px";
 
     world.appendChild(el);
 
@@ -537,319 +1162,994 @@ function createObstacle(type, x, bottom = 80) {
     });
 }
 
-function spawnPattern() {
 
-    const startX = window.innerWidth + 100;
+function orb(
+    x,
+    bottom
+){
 
-    const patterns = [
+    const el=
+        document.createElement("div");
 
-        () => {
-            createObstacle("spike", startX);
-        },
+    el.className=
+        "obstacle orb";
 
-        () => {
-            createObstacle("spike", startX);
-            createObstacle("spike", startX + 45);
-        },
+    el.style.left=
+        x+"px";
 
-        () => {
-            createObstacle("block", startX);
-            createObstacle("spike", startX + 70);
-        },
+    el.style.bottom=
+        bottom+"px";
 
-        () => {
-            createObstacle("spike", startX);
-            createObstacle("spike", startX + 45);
-            createObstacle("spike", startX + 90);
-        },
+    world.appendChild(el);
 
-        () => {
-            createObstacle("block", startX);
-            createObstacle("block", startX + 65);
-        },
-
-        () => {
-            createObstacle("spike", startX);
-            createObstacle("block", startX + 75);
-            createObstacle("spike", startX + 145);
-        },
-
-        () => {
-            createObstacle("doubleSpike", startX);
-        }
-
-    ];
-
-    const pattern = patterns[
-        Math.floor(Math.random() * patterns.length)
-    ];
-
-    pattern();
+    orbs.push({
+        el,
+        x
+    });
 }
 
-/* -------------------------
+
+/* =========================================
+   FAIR PATTERNS
+========================================= */
+
+function pattern(){
+
+    const x=
+        window.innerWidth+100;
+
+    const p=
+        Math.floor(
+            Math.random()*8
+        );
+
+
+    if(p===0){
+
+        obstacle(
+            "spike",
+            x
+        );
+
+        orb(
+            x+120,
+            145
+        );
+
+    }
+
+
+    else if(p===1){
+
+        obstacle(
+            "spike",
+            x
+        );
+
+        obstacle(
+            "spike",
+            x+65
+        );
+
+        orb(
+            x+145,
+            165
+        );
+
+    }
+
+
+    else if(p===2){
+
+        obstacle(
+            "block",
+            x
+        );
+
+        orb(
+            x+100,
+            155
+        );
+
+        obstacle(
+            "spike",
+            x+180
+        );
+
+    }
+
+
+    else if(p===3){
+
+        obstacle(
+            "spike",
+            x
+        );
+
+        orb(
+            x+100,
+            180
+        );
+
+        obstacle(
+            "spike",
+            x+190
+        );
+
+    }
+
+
+    else if(p===4){
+
+        /*
+           Dash-friendly section
+        */
+
+        obstacle(
+            "block",
+            x
+        );
+
+        obstacle(
+            "block",
+            x+70
+        );
+
+        orb(
+            x+150,
+            170
+        );
+
+    }
+
+
+    else if(p===5){
+
+        /*
+           Double-jump section
+        */
+
+        obstacle(
+            "spike",
+            x
+        );
+
+        obstacle(
+            "spike",
+            x+55
+        );
+
+        obstacle(
+            "spike",
+            x+110
+        );
+
+        orb(
+            x+175,
+            190
+        );
+
+    }
+
+
+    else if(p===6){
+
+        /*
+           Dash lane.
+        */
+
+        obstacle(
+            "block",
+            x,
+            76
+        );
+
+        obstacle(
+            "block",
+            x+65,
+            76
+        );
+
+        obstacle(
+            "spike",
+            x+160,
+            76
+        );
+
+        orb(
+            x+230,
+            170
+        );
+
+    }
+
+
+    else{
+
+        /*
+           Mixed challenge.
+        */
+
+        obstacle(
+            "spike",
+            x
+        );
+
+        orb(
+            x+100,
+            170
+        );
+
+        obstacle(
+            "block",
+            x+180
+        );
+
+        obstacle(
+            "spike",
+            x+270
+        );
+
+    }
+
+
+    /*
+       Never spawn the next
+       pattern too close.
+    */
+
+    spawnDistance=
+        Math.max(
+            370,
+            530-speed*15
+        );
+}
+
+
+/* =========================================
+   DASH TRAIL
+========================================= */
+
+function createDashTrail(){
+
+    for(let i=0;i<5;i++){
+
+        setTimeout(()=>{
+
+            if(!running)
+                return;
+
+            const trail=
+                document.createElement("div");
+
+            trail.className=
+                "dashTrail";
+
+            trail.style.left=
+                playerX+"px";
+
+            trail.style.bottom=
+                (76+y)+"px";
+
+            world.appendChild(trail);
+
+            setTimeout(
+                ()=>trail.remove(),
+                350
+            );
+
+        },i*30);
+    }
+}
+
+
+/* =========================================
    PARTICLES
-------------------------- */
+========================================= */
 
-function createParticle() {
+function particle(){
 
-    const p = document.createElement("div");
+    const r=
+        player.getBoundingClientRect();
 
-    p.className = "particle";
+    const p=
+        document.createElement("div");
 
-    const rect = player.getBoundingClientRect();
+    p.className="particle";
 
-    p.style.left =
-        (rect.left + window.scrollX + 10 + Math.random() * 25) + "px";
+    p.style.left=
+        r.left+
+        8+
+        Math.random()*25+
+        "px";
 
-    p.style.top =
-        (rect.top + Math.random() * 35) + "px";
+    p.style.top=
+        r.top+
+        10+
+        Math.random()*25+
+        "px";
 
     world.appendChild(p);
 
     particles.push({
-        el: p,
-        x: parseFloat(p.style.left),
-        y: parseFloat(p.style.top),
-        life: 1,
-        vx: -2 - Math.random() * 2,
-        vy: (Math.random() - .5) * 2
+        el:p,
+        x:parseFloat(p.style.left),
+        y:parseFloat(p.style.top),
+        vx:-1.5-Math.random()*2,
+        vy:(Math.random()-.5)*2,
+        life:1
     });
 }
 
-function updateParticles() {
 
-    for (let i = particles.length - 1; i >= 0; i--) {
+function updateParticles(dt){
 
-        const p = particles[i];
+    for(
+        let i=particles.length-1;
+        i>=0;
+        i--
+    ){
 
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= .035;
+        const p=
+            particles[i];
 
-        p.el.style.left = p.x + "px";
-        p.el.style.top = p.y + "px";
-        p.el.style.opacity = p.life;
+        p.x+=p.vx*dt;
+        p.y+=p.vy*dt;
 
-        if (p.life <= 0) {
+        p.life-=.04*dt;
+
+        p.el.style.left=
+            p.x+"px";
+
+        p.el.style.top=
+            p.y+"px";
+
+        p.el.style.opacity=
+            p.life;
+
+        if(p.life<=0){
 
             p.el.remove();
-            particles.splice(i, 1);
+
+            particles.splice(i,1);
         }
     }
 }
 
-/* -------------------------
+
+/* =========================================
+   SPEED LINES
+========================================= */
+
+function speedLine(){
+
+    const l=
+        document.createElement("div");
+
+    l.className="speedline";
+
+    l.style.width=
+        30+
+        Math.random()*130+
+        "px";
+
+    l.style.left=
+        window.innerWidth+"px";
+
+    l.style.top=
+        20+
+        Math.random()*65+
+        "%";
+
+    world.appendChild(l);
+
+    lines.push({
+        el:l,
+        x:window.innerWidth
+    });
+}
+
+
+function updateLines(dt){
+
+    for(
+        let i=lines.length-1;
+        i>=0;
+        i--
+    ){
+
+        const l=
+            lines[i];
+
+        l.x-=
+            speed*
+            2.2*
+            dt;
+
+        l.el.style.left=
+            l.x+"px";
+
+        if(l.x<-200){
+
+            l.el.remove();
+
+            lines.splice(i,1);
+        }
+    }
+}
+
+
+/* =========================================
    COLLISION
-------------------------- */
+========================================= */
 
-function isColliding(a, b) {
+function collision(a,b){
 
-    const r1 = a.getBoundingClientRect();
-    const r2 = b.getBoundingClientRect();
+    const A=
+        a.getBoundingClientRect();
+
+    const B=
+        b.getBoundingClientRect();
 
     return !(
-        r1.right < r2.left + 7 ||
-        r1.left + 7 > r2.right ||
-        r1.bottom < r2.top + 7 ||
-        r1.top + 7 > r2.bottom
+        A.right-8<B.left+5||
+        A.left+8>B.right-5||
+        A.bottom-7<B.top+5||
+        A.top+7>B.bottom-5
     );
 }
 
-function checkCollisions() {
 
-    for (const o of obstacles) {
+function collisions(){
 
-        if (isColliding(player, o.el)) {
+    for(const o of obstacles){
+
+        if(
+            collision(
+                player,
+                o.el
+            )
+        ){
+
             die();
+
             return;
         }
     }
+
+
+    for(
+        let i=orbs.length-1;
+        i>=0;
+        i--
+    ){
+
+        if(
+            collision(
+                player,
+                orbs[i].el
+            )
+        ){
+
+            collectOrb(i);
+        }
+    }
 }
 
-/* -------------------------
+
+/* =========================================
+   ORBS
+========================================= */
+
+function collectOrb(i){
+
+    const o=
+        orbs[i];
+
+    score+=50;
+
+    combo++;
+
+    createPopup(
+        "+50",
+        "#ffe45c"
+    );
+
+    beep(
+        850,
+        .1,
+        "sine",
+        .045
+    );
+
+    o.el.remove();
+
+    orbs.splice(i,1);
+
+    shake=3;
+}
+
+
+/* =========================================
+   POPUP
+========================================= */
+
+function createPopup(
+    text,
+    color
+){
+
+    const r=
+        player.getBoundingClientRect();
+
+    const p=
+        document.createElement("div");
+
+    p.className="popup";
+
+    p.textContent=text;
+
+    p.style.color=color;
+
+    p.style.left=
+        r.left+"px";
+
+    p.style.top=
+        r.top+"px";
+
+    game.appendChild(p);
+
+    setTimeout(
+        ()=>p.remove(),
+        600
+    );
+}
+
+
+/* =========================================
    DEATH
-------------------------- */
+========================================= */
 
-function die() {
+function die(){
 
-    if (gameOver) return;
+    if(dead)
+        return;
 
-    gameOver = true;
-    running = false;
+    dead=true;
+    running=false;
 
-    player.style.filter = "brightness(3)";
-    player.style.boxShadow =
-        "0 0 30px #fff, 0 0 60px #ff315f";
+    combo=0;
 
-    if (score > best) {
-        best = score;
-        localStorage.setItem("neonDashBest", best);
+    flash.style.transition="none";
+    flash.style.opacity=".75";
+
+    setTimeout(()=>{
+
+        flash.style.transition=
+            "opacity .35s";
+
+        flash.style.opacity="0";
+
+    },30);
+
+    beep(
+        130,
+        .35,
+        "sawtooth",
+        .05
+    );
+
+
+    if(score>best){
+
+        best=score;
+
+        localStorage.setItem(
+            "neonDashBest",
+            best
+        );
     }
 
-    finalScore.innerHTML =
-        `Score: ${score}<br>Best: ${best}`;
 
-    setTimeout(() => {
+    finalScore.textContent=
+        "SCORE  "+score;
 
-        overlay.style.display = "flex";
-        startText.style.display = "none";
-        gameOverText.style.display = "block";
+    bestScore.textContent=
+        "BEST  "+best+
+        "   •   MAX COMBO ×"+
+        bestCombo;
 
-        player.style.filter = "";
-        player.style.boxShadow = "";
 
-    }, 300);
+    setTimeout(()=>{
+
+        overlay.style.display="flex";
+
+        startScreen.style.display="none";
+
+        gameOverScreen.style.display=
+            "block";
+
+    },450);
 }
 
-/* -------------------------
+
+/* =========================================
    CLEANUP
-------------------------- */
+========================================= */
 
-function clearObstacles() {
+function clearObjects(){
 
-    obstacles.forEach(o => o.el.remove());
+    obstacles.forEach(
+        o=>o.el.remove()
+    );
 
-    obstacles = [];
+    orbs.forEach(
+        o=>o.el.remove()
+    );
 
-    particles.forEach(p => p.el.remove());
+    particles.forEach(
+        p=>p.el.remove()
+    );
 
-    particles = [];
+    lines.forEach(
+        l=>l.el.remove()
+    );
+
+    obstacles=[];
+    orbs=[];
+    particles=[];
+    lines=[];
 }
 
-/* -------------------------
+
+/* =========================================
    GAME LOOP
-------------------------- */
+========================================= */
 
-function gameLoop(time) {
+let lastTime=0;
 
-    if (!running) return;
+function loop(time){
 
-    if (!lastTime) lastTime = time;
+    if(!running)
+        return;
 
-    const dt = Math.min((time - lastTime) / 16.67, 2);
+    let dt=
+        (time-lastTime)/16.67;
 
-    lastTime = time;
+    dt=
+        Math.min(
+            dt,
+            2
+        );
+
+    lastTime=time;
 
     update(dt);
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(loop);
 }
 
-/* -------------------------
+
+/* =========================================
    UPDATE
-------------------------- */
+========================================= */
 
-function update(dt) {
+function update(dt){
 
-    /* Player physics */
+    /* SPEED */
 
-    velocity -= gravity * dt;
+    speed+=.0018*dt;
 
-    playerY += velocity * dt;
+    speed=
+        Math.min(
+            speed,
+            13.5
+        );
 
-    if (playerY < 0) {
 
-        playerY = 0;
-        velocity = 0;
+    /* DISTANCE */
+
+    distance+=speed*dt;
+
+    score=
+        Math.floor(distance/10)+
+        combo*2;
+
+
+    /* =====================================
+       PLAYER VERTICAL PHYSICS
+    ===================================== */
+
+    velocity-=gravity*dt;
+
+    y+=velocity*dt;
+
+
+    /*
+       LANDING
+    */
+
+    if(y<=0){
+
+        y=0;
+        velocity=0;
+
+        /*
+           Reset double jump
+           when touching ground.
+        */
+
+        jumpsUsed=0;
     }
 
-    player.style.bottom =
-        (80 + playerY) + "px";
 
-    if (playerY > 2) {
-        rotation += 7 * dt;
-    } else {
-        rotation =
-            Math.round(rotation / 90) * 90;
+    player.style.bottom=
+        (76+y)+"px";
+
+
+    if(y>2){
+
+        rotation+=7*dt;
+
+    }else{
+
+        rotation=
+            Math.round(rotation/90)*90;
     }
 
-    player.style.transform =
+
+    /* =====================================
+       DASH PHYSICS
+    ===================================== */
+
+    if(dashCooldown>0){
+
+        dashCooldown-=dt;
+
+        if(dashCooldown<0)
+            dashCooldown=0;
+    }
+
+
+    if(dashTimer>0){
+
+        /*
+           Move horizontally.
+
+           Dash works both
+           directions.
+        */
+
+        playerX+=
+            dashVelocity*dt;
+
+        dashTimer-=dt;
+
+        dashVelocity*=.88;
+
+
+        /*
+           Keep player inside
+           reasonable screen bounds.
+        */
+
+        playerX=
+            Math.max(
+                25,
+                Math.min(
+                    window.innerWidth-70,
+                    playerX
+                )
+            );
+
+
+        /*
+           Reset dash after
+           burst is finished.
+        */
+
+        if(dashTimer<=0){
+
+            dashTimer=0;
+            dashVelocity=0;
+        }
+
+        createDashTrail();
+    }
+
+
+    /*
+       Normal player position.
+    */
+
+    player.style.left=
+        playerX+"px";
+
+    player.style.transform=
         `rotate(${rotation}deg)`;
 
 
-    /* Speed */
+    /* =====================================
+       HUD
+    ===================================== */
 
-    speed += 0.0008 * dt;
-
-    if (speed > 13)
-        speed = 13;
-
-
-    /* Distance */
-
-    distance += speed * dt;
-
-    score = Math.floor(distance / 10);
-
-    scoreEl.textContent =
-        "SCORE  " + score;
+    scoreEl.textContent=
+        String(score)
+            .padStart(6,"0");
 
 
-    /* Progress */
+    comboEl.textContent=
+        combo>=2
+            ? `COMBO ×${combo}`
+            : "";
 
-    progressEl.style.width =
-        ((score % 1000) / 10) + "%";
+
+    progress.style.width=
+        Math.min(
+            100,
+            (distance%1000)/10
+        )+"%";
 
 
-    /* Spawn */
+    let jumpStatus;
 
-    spawnTimer -= speed * dt;
+    if(jumpsUsed===0)
+        jumpStatus=
+            "DOUBLE JUMP: READY";
 
-    if (spawnTimer <= 0) {
+    else if(jumpsUsed===1)
+        jumpStatus=
+            "DOUBLE JUMP: 1 LEFT";
 
-        spawnPattern();
+    else
+        jumpStatus=
+            "DOUBLE JUMP: USED";
 
-        spawnTimer =
-            230 + Math.random() * 110;
+
+    let dashStatus=
+        dashCooldown<=0
+            ? "DASH: READY"
+            : "DASH: "+
+              (dashCooldown/55)
+              .toFixed(1)+"s";
+
+
+    status.textContent=
+        jumpStatus+
+        "  •  "+
+        dashStatus;
+
+
+    /* =====================================
+       SPAWNING
+    ===================================== */
+
+    spawnDistance-=
+        speed*dt;
+
+    if(spawnDistance<=0){
+
+        pattern();
     }
 
 
-    /* Move obstacles */
+    /* =====================================
+       MOVE OBSTACLES
+    ===================================== */
 
-    for (let i = obstacles.length - 1; i >= 0; i--) {
+    for(
+        let i=obstacles.length-1;
+        i>=0;
+        i--
+    ){
 
-        const o = obstacles[i];
+        const o=
+            obstacles[i];
 
-        o.x -= speed * dt;
+        o.x-=
+            speed*dt;
 
-        o.el.style.left =
-            o.x + "px";
+        o.el.style.left=
+            o.x+"px";
 
-        if (o.x < -150) {
+
+        if(o.x<-180){
 
             o.el.remove();
-            obstacles.splice(i, 1);
+
+            obstacles.splice(i,1);
         }
     }
 
 
-    /* Particles */
+    /* =====================================
+       MOVE ORBS
+    ===================================== */
 
-    if (Math.random() < .8) {
-        createParticle();
+    for(
+        let i=orbs.length-1;
+        i>=0;
+        i--
+    ){
+
+        const o=
+            orbs[i];
+
+        o.x-=
+            speed*dt;
+
+        o.el.style.left=
+            o.x+"px";
+
+
+        if(o.x<-100){
+
+            o.el.remove();
+
+            orbs.splice(i,1);
+        }
     }
 
-    updateParticles();
+
+    /* =====================================
+       EFFECTS
+    ===================================== */
+
+    if(Math.random()<.65)
+        particle();
+
+    if(Math.random()<.12)
+        speedLine();
 
 
-    /* Collision */
+    updateParticles(dt);
 
-    checkCollisions();
+    updateLines(dt);
+
+
+    /* =====================================
+       SCREEN SHAKE
+    ===================================== */
+
+    if(shake>0){
+
+        shake-=.3*dt;
+
+        game.style.transform=
+            `translate(
+                ${(Math.random()-.5)*shake}px,
+                ${(Math.random()-.5)*shake}px
+            )`;
+
+    }else{
+
+        game.style.transform="";
+    }
+
+
+    /* =====================================
+       COLLISION
+    ===================================== */
+
+    collisions();
 }
 
-/* -------------------------
-   Resize safety
-------------------------- */
 
-window.addEventListener("resize", () => {
+/* =========================================
+   RESIZE
+========================================= */
 
-    player.style.left =
-        Math.min(
-            window.innerWidth * .15,
-            220
-        ) + "px";
-});
+window.addEventListener(
+    "resize",
+    ()=>{
+
+        playerX=
+            Math.min(
+                playerX,
+                window.innerWidth-70
+            );
+    }
+);
 
 </script>
 
